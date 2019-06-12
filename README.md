@@ -4,6 +4,7 @@ A microservices-based app that shows list of missiles with possibilities to laun
 
 Current state: In Development.
 
-For architectural reference see 'MLMC_Design_alpha1.png' in the root (note that image resolution is big so it's better to open it in separate window and adjust scale).
+For architectural reference see this diagram:
+![Architectural reference diagram](https://github.com/kakarotto67/mlmc/blob/master/MLMC_Design_alpha1.png)
 
 Documentation is goign to be addded soon.
