@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   services: {
     operation: {
-      uri: "http://localhost:5501/api/operation/"
+      uri: "https://localhost:5001/api/"
     }
   }
 };

@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   services: {
     operation: {
-      uri: "http://localhost:5501/api/operation/" // TODO: Update for production
+      uri: "https://localhost:5001/api/" // TODO: Update for production
     }
   }
 };

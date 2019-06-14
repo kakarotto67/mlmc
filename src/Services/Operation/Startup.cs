@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Operation.Database;
 
 namespace Operation
 {
@@ -25,12 +21,19 @@ namespace Operation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup Database
+            services.AddDbContext<DoDDataWarehouseContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DepartmentOfDefenseDataWarehouse")));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) //ILoggingBuilder loggingBuilder)
         {
+            // loggingBuilder.AddConsole();
+            // loggingBuilder.AddDebug();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -43,6 +46,13 @@ namespace Operation
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Initialize Database with default data
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var services = serviceScope.ServiceProvider;
+                DoDDataWarehouseSeedData.SeedDatabase(services.GetService<DoDDataWarehouseContext>());
+            }
         }
     }
 }
