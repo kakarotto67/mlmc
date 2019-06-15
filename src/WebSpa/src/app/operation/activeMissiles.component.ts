@@ -17,7 +17,18 @@ export class ActiveMissilesComponent {
   // This leads to real time calls to API
   private getActiveMissiles() {
     return this.operationRepo.getMissiles().subscribe(response => {
-      this.activeMissilesArray = response;
+      this.activeMissilesArray = response.map(
+        x =>
+          new Missile(
+            x.missileId,
+            x.serviceIdentityNumber,
+            x.name,
+            x.type,
+            x.status,
+            x.inServiceDateStart,
+            x.inServiceDateEnd
+          )
+      );
     });
   }
 

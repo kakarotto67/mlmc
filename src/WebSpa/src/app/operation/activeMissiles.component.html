@@ -1,6 +1,6 @@
 <div *ngIf="activeMissiles?.length > 0; else nodata">
   <div *ngFor="let missile of activeMissiles">
-    <div>{{ missile.name }} | {{ missile.type }}</div>
+    <div>{{ missile.name }} | {{ missile.type }} | {{missile.status}}</div>
   </div>
 </div>
 <ng-template #nodata>
