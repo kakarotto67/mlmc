@@ -8,9 +8,20 @@ import { Missile } from "../repositories/models/missile.model";
   templateUrl: "activeMissiles.component.html"
 })
 export class ActiveMissilesComponent {
-  constructor(private operationRepo: OperationRepository) {}
+  private activeMissilesArray: Missile[];
 
-  public get missiles(): Observable<Missile[]> {
-    return this.operationRepo.getMissiles();
+  constructor(private operationRepo: OperationRepository) {
+    this.getActiveMissiles();
+  }
+
+  // This leads to real time calls to API
+  private getActiveMissiles() {
+    return this.operationRepo.getMissiles().subscribe(response => {
+      this.activeMissilesArray = response;
+    });
+  }
+
+  public get activeMissiles(): Missile[] {
+    return this.activeMissilesArray;
   }
 }

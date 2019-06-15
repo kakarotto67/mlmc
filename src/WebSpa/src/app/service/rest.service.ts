@@ -7,6 +7,10 @@ import { catchError } from "rxjs/operators";
 export class RestService {
   constructor(private http: HttpClient) {}
 
+  // public get httpClient() {
+  //   return this.http;
+  // }
+
   // Generic send request method
   public sendRequest<T>(
     verb: string,
@@ -20,9 +24,9 @@ export class RestService {
         headers: headers
       })
       .pipe(
-        catchError((error: Response) =>
-          throwError(`Network Error: ${error.statusText} (${error.status})`)
-        )
+        catchError((error: Response) => {
+          return throwError(`Network Error: ${error.statusText} (${error.status})`);
+        })
       );
   }
 }

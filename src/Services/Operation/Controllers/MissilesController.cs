@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Operation.Database;
 using Operation.Models;
 
 namespace Operation.Controllers
 {
+    [EnableCors("Operation.Missiles")]
     [Route("api/[controller]")]
     [ApiController]
     public class MissilesController : ControllerBase

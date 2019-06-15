@@ -26,6 +26,10 @@ namespace Operation
                 options => options.UseSqlServer(Configuration.GetConnectionString("DepartmentOfDefenseDataWarehouse")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Configure cross-origin requests (CORS) so consumers can access this API
+            services.AddCors(x => x.AddPolicy("Operation.Missiles",
+               builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
