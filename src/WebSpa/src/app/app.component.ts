@@ -6,21 +6,21 @@ import { Component } from "@angular/core";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  private _showActiveMissiles: boolean;
+  private activeMissilesLoaded: boolean;
 
   constructor() {
-    this._showActiveMissiles = false;
+    this.activeMissilesLoaded = false;
   }
 
   public loadActiveMissiles() {
-    this._showActiveMissiles = true;
+    this.activeMissilesLoaded = true;
   }
 
   public unloadActiveMissiles() {
-    this._showActiveMissiles = false;
+    this.activeMissilesLoaded = false;
   }
 
   public get showActiveMissiles(): boolean {
-    return this._showActiveMissiles;
+    return this.activeMissilesLoaded;
   }
 }

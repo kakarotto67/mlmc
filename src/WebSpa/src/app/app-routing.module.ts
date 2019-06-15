@@ -7,13 +7,7 @@ const routes: Routes = [
   { path: "", redirectTo: "/index", pathMatch: "full" },
   {
     path: "index",
-    component: AppComponent,
-    // children: [
-    //   {
-    //     path: "activeMissiles",
-    //     component: ActiveMissilesComponent
-    //   }
-    // ]
+    component: AppComponent
   }
 ];
 
