@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { OperationRepository } from './repositories/operation/operation.repository';
 
 @Component({
   selector: "app-root",
@@ -9,13 +8,16 @@ import { OperationRepository } from './repositories/operation/operation.reposito
 export class AppComponent {
   private _showActiveMissiles: boolean;
 
-  constructor(private operationRepo: OperationRepository) {
+  constructor() {
+    this._showActiveMissiles = false;
+  }
+
+  public loadActiveMissiles() {
     this._showActiveMissiles = true;
   }
 
-  public toggleShowActiveMissiles() {
-    this._showActiveMissiles = !this._showActiveMissiles;
-    // console.log(`toggleShowActiveMissiles: ${this._showActiveMissiles}`);
+  public unloadActiveMissiles() {
+    this._showActiveMissiles = false;
   }
 
   public get showActiveMissiles(): boolean {

@@ -1,35 +1,8 @@
-<!-- Long Modal -->
-<div
-  class="modal fade"
-  id="exampleModalLong"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLongTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal Title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h1>List of active missiles</h1>
-        <div *ngIf="missiles?.length > 0; else nodata">
-            <div *ngFor="let missile of missiles">
-                <div>{{missile.name}} | {{missile.type}}</div>
-            </div>
-        </div>
-        <ng-template #nodata>
-          <h4 class="m-1">Loading list of missiles...</h4>
-        </ng-template>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-pill" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary btn-pill">Save Changes</button>
-      </div>
-    </div>
+<div *ngIf="missiles?.length > 0; else nodata">
+  <div *ngFor="let missile of missiles">
+    <div>{{ missile.name }} | {{ missile.type }}</div>
   </div>
 </div>
+<ng-template #nodata>
+  <h4 class="m-1">Loading list of missiles...</h4>
+</ng-template>

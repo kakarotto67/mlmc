@@ -7,7 +7,7 @@ import { Missile } from "../repositories/models/missile.model";
   selector: "active-missiles",
   templateUrl: "activeMissiles.component.html"
 })
-export class ActiveMissiles {
+export class ActiveMissilesComponent {
   constructor(private operationRepo: OperationRepository) {}
 
   public get missiles(): Observable<Missile[]> {
