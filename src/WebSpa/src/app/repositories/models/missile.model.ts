@@ -1,18 +1,21 @@
 export class Missile {
-  public type: string;
-  public status: string;
+  //public type: string;
+  //public status: string;
+
+  public typeString: string;
+  public statusString: string;
 
   constructor(
     public missileId: number,
     public serviceIdentityNumber: string,
     public name: string,
-    type: number,
-    status: number,
+    public type: number,
+    public status: number,
     public inServiceDateStart: string,
     public inServiceDateEnd?: any
   ) {
-    this.type = MissileTypeHelper.toDisplayValue(type);
-    this.status = MissileStatusHelper.toDisplayValue(status);
+    this.typeString = MissileTypeHelper.toDisplayValue(type);
+    this.statusString = MissileStatusHelper.toDisplayValue(status);
   }
 }
 
