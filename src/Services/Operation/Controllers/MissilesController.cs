@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Operation.Database;
 using Operation.Models;
+using Operation.MongoDb;
 
 namespace Operation.Controllers
 {
@@ -12,18 +12,18 @@ namespace Operation.Controllers
     [ApiController]
     public class MissilesController : ControllerBase
     {
-        private readonly DoDDataWarehouseContext dbContext;
+        private readonly MissileService missileService;
 
-        public MissilesController(DoDDataWarehouseContext dbContext)
+        public MissilesController(MissileService missileService)
         {
-            this.dbContext = dbContext;
+            this.missileService = missileService;
         }
 
         // GET api/missiles
         [HttpGet]
         public ActionResult<IEnumerable<Missile>> GetMissiles()
         {
-            return Ok(dbContext.Missiles);
+            return Ok(missileService.Get());
         }
 
         // // GET api/values/5

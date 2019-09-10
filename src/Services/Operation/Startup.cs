@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Operation.Database;
+using Microsoft.Extensions.Options;
+using Operation.MongoDb;
 
 namespace Operation
 {
@@ -22,8 +21,13 @@ namespace Operation
         public void ConfigureServices(IServiceCollection services)
         {
             // Setup Database
-            services.AddDbContext<DoDDataWarehouseContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DepartmentOfDefenseDataWarehouse")));
+            services.Configure<OperationDatabaseSettings>(
+                    Configuration.GetSection(nameof(OperationDatabaseSettings)));
+            services.AddSingleton<IOperationDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<OperationDatabaseSettings>>().Value);
+
+            services.AddScoped<IUnitOfWork, OperationDatabaseContext>();
+            services.AddScoped<MissileService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -55,7 +59,10 @@ namespace Operation
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var services = serviceScope.ServiceProvider;
-                DoDDataWarehouseSeedData.SeedDatabase(services.GetService<DoDDataWarehouseContext>());
+                var dbSettings = services.GetService<IOperationDatabaseSettings>();
+                var unitOfWork = services.GetService<IUnitOfWork>();
+
+                OperationDatabaseSeedHelper.SeedDatabase(dbSettings, unitOfWork);
             }
         }
     }

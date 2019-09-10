@@ -1,21 +1,20 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using MongoDB.Driver;
 using Operation.Models;
 
-namespace Operation.Database
+namespace Operation.MongoDb
 {
-    public class DoDDataWarehouseSeedData
+    internal static class OperationDatabaseSeedHelper
     {
-        public static void SeedDatabase(DoDDataWarehouseContext context)
+        internal static void SeedDatabase(IOperationDatabaseSettings dbSettings, IUnitOfWork unitOfWork)
         {
-            context.Database.EnsureCreated();
-            //context.Database.Migrate();
-
-            if (!context.Missiles.Any())
+            var missilesCollection = unitOfWork.DatabaseInstance.GetCollection<Missile>(dbSettings.MissilesCollectionName);
+            var missilesDefaultList = new List<Missile>
             {
-                context.Missiles.AddRange(
-                    new Missile
+                new Missile
                     {
+                        MissileId = 1,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "AIM-7 Sparrow",
                         Type = MissileType.AirToAir,
@@ -24,6 +23,7 @@ namespace Operation.Database
                     },
                     new Missile
                     {
+                        MissileId = 2,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "AGM-158 JASSM",
                         Type = MissileType.AirToSurface,
@@ -32,6 +32,7 @@ namespace Operation.Database
                     },
                     new Missile
                     {
+                        MissileId = 3,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "BGM-109 Tomahawk",
                         Type = MissileType.SurfaceToSurface,
@@ -40,6 +41,7 @@ namespace Operation.Database
                     },
                     new Missile
                     {
+                        MissileId = 4,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "RIM-161 Standard Missile 3",
                         Type = MissileType.SurfaceToAir,
@@ -48,6 +50,7 @@ namespace Operation.Database
                     },
                     new Missile
                     {
+                        MissileId = 5,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "LGM-30 Minuteman",
                         Type = MissileType.ICBM,
@@ -56,15 +59,18 @@ namespace Operation.Database
                     },
                     new Missile
                     {
+                        MissileId = 6,
                         ServiceIdentityNumber = Guid.NewGuid(),
                         Name = "UGM-133 Trident II",
                         Type = MissileType.SubmarineLaunched,
                         InServiceDateStart = new DateTime(1990, 1, 1),
                         Status = MissileStatus.InService
                     }
-                );
+            };
 
-                context.SaveChanges();
+            if (!missilesCollection.Find(missile => true).Any())
+            {
+                missilesCollection.InsertMany(missilesDefaultList);
             }
         }
     }

@@ -1,0 +1,8 @@
+version: "3"
+  
+services:
+  operation-database:
+    image: "mongo"
+    container_name: "mlmc-operation-database"
+    ports:
+      - "27018:27017"
