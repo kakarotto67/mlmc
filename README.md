@@ -1,6 +1,6 @@
 # Missile Launch & Monitoring Center
 
-A microservices-based app that shows list of missiles with possibilities to launch them and track their realtime movement on google map.
+A microservices-based app that shows list of missiles with possibilities to launch them and track their realtime movement on the map.
 
 Current state: In Active Development.
 
