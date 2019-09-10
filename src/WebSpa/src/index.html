@@ -36,34 +36,46 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <script src="assets/plugins/nprogress/nprogress.js"></script>
-   <!-- <script>
+  <!-- <script>
       NProgress.configure({ showSpinner: false });
       NProgress.start();
-    </script> -->
+  </script> -->
+
+  <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
+  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css">
+  <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+  <!-- Add a reference to the Azure Maps Services Module JavaScript file. -->
+  <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas-service.min.js"></script>
+  <script>
+    // Gets Azure Map and loads into specified id
+    function initAzureMap() {
+        // Instantiate a map object
+        var map = new atlas.Map("RealTimeMap-Id", {
+          // Use Azure Maps subscription key to the map SDK
+          authOptions: {
+            authType: "subscriptionKey",
+            subscriptionKey: "GWkDykJYBJ0kfPefFCYdZTye6RhmcfBblwbS_R3f_FY"
+          },
+          style: "day",
+          // Note: [longitude, latitude] (in google maps vise versa)
+          // For New Zealand
+          //center: [171.7799, -40.838875],
+          // For Ukraine
+          center: [31.7233, 48.4792],
+          zoom: 5
+        });
+        // Wait until the map resources are ready.
+        // map.events.add("ready", function() {
+        // });
+      }
+  </script>
 </head>
 
 
-  <body class="sidebar-fixed sidebar-dark header-light header-fixed" id="body">
+  <body class="sidebar-fixed sidebar-dark header-light header-fixed" id="body" onload="initAzureMap()">
 
    <app-root></app-root>
 
-   <script>
-    // Initialize and add the map
-    function initMap() {
-      // The location of Lviv
-      var lviv = {lat: 49.843, lng: 24.026};
-      // The map, centered at Lviv
-      var map = new google.maps.Map(
-          document.getElementById('realTimeMap'), {zoom: 4, center: lviv});
-      // The marker, positioned at Lviv
-      var marker = new google.maps.Marker({position: lviv, map: map});
-    }
-  </script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkVHsFa0FKAY-FjYNc5_k7ki1sLpeGpJM&callback=initMap">
-  </script>
-
-   <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCn8TFXGg17HAUcNpkwtxxyT9Io9B_NcM" defer></script> -->
    <script src="assets/plugins/jquery/jquery.min.js"></script>
    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
    <script src="assets/plugins/toaster/toastr.min.js"></script>
@@ -77,7 +89,6 @@
    <script src="assets/plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
    <script src="assets/plugins/daterangepicker/moment.min.js"></script>
    <script src="assets/plugins/daterangepicker/daterangepicker.js"></script>
-   <!-- <script src="assets/plugins/jekyll-search.min.js"></script> -->
    <script src="assets/js/sleek.js"></script>
    <script src="assets/js/chart.js"></script>
    <script src="assets/js/date-range.js"></script>
