@@ -9,6 +9,8 @@ namespace Operation.Models
         [BsonId]
         [BsonRepresentation(BsonType.Int64)]
         public long MissileId { get; set; }
+        [BsonRepresentation(BsonType.Int64)]
+        public long DeploymentPlatformId { get; set; }
         public Guid ServiceIdentityNumber { get; set; }
         public string Name { get; set; }
         public MissileType Type {get;set;}

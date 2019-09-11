@@ -5,5 +5,6 @@ namespace Operation.MongoDb
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
         string MissilesCollectionName { get; set; }
+        string DeploymentPlatformsCollectionName { get; set; }
     }
 }

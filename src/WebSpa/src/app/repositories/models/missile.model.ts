@@ -46,8 +46,14 @@ class MissileStatusHelper {
     switch (intValue) {
       case MissileStatus.InService:
         return "In Service";
+      case MissileStatus.Deployed:
+        return "Deployed";
       case MissileStatus.Launched:
         return "Launched";
+      case MissileStatus.TargetReached:
+        return "Target Reached";
+      case MissileStatus.TargetMissed:
+        return "Target Missed";
       case MissileStatus.Decommisioned:
         return "Decommisioned";
       default:
@@ -67,6 +73,9 @@ enum MissileType {
 
 enum MissileStatus {
   InService,
+  Deployed,
   Launched,
+  TargetReached,
+  TargetMissed,
   Decommisioned
 }
