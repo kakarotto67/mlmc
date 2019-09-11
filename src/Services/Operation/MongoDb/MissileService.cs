@@ -13,6 +13,10 @@ namespace Operation.MongoDb
             _missilesCollection = unitOfWork.DatabaseInstance.GetCollection<Missile>(dbSettings.MissilesCollectionName);
         }
 
-        internal IEnumerable<Missile> Get() => _missilesCollection.Find(missile => true).ToEnumerable();
+        internal IEnumerable<Missile> Get() => _missilesCollection
+            .Find(missile => true).ToEnumerable();
+
+        internal IEnumerable<Missile> Get(MissileStatus status) => _missilesCollection
+            .Find(missile => missile.Status == status).ToEnumerable();
     }
 }

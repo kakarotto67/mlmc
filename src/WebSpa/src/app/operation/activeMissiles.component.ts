@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { OperationRepository } from "../repositories/operation/operation.repository";
 import { Observable } from "rxjs";
-import { Missile } from "../repositories/models/missile.model";
+import { Missile, MissileStatus } from "../repositories/models/missile.model";
 
 @Component({
   selector: "active-missiles",
@@ -16,7 +16,7 @@ export class ActiveMissilesComponent {
 
   // This leads to real time calls to API
   private getActiveMissiles() {
-    return this.operationRepo.getMissiles().subscribe(response => {
+    return this.operationRepo.getMissiles(MissileStatus.InService).subscribe(response => {
       this.activeMissilesArray = response.map(
         x =>
           new Missile(

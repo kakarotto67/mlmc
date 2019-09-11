@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { RestService } from "../../service/rest.service";
 import { Observable } from "rxjs";
-import { Missile } from "../models/missile.model";
+import { Missile, MissileStatus } from "../models/missile.model";
 import { environment } from "src/environments/environment";
 
 @Injectable()
@@ -11,7 +11,10 @@ export class OperationRepository {
   constructor(private restService: RestService) {}
 
   // Get list of ready-to-use missiles
-  public getMissiles(): Observable<Missile[]> {
-    return this.restService.sendRequest<Missile[]>("GET", `${this.baseUri}/missiles`);
+  public getMissiles(status: MissileStatus): Observable<Missile[]> {
+    var url =
+      status ? `${this.baseUri}/missiles?status=${status}` : `${this.baseUri}/missiles`;
+
+    return this.restService.sendRequest<Missile[]>("GET", url);
   }
 }

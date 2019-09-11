@@ -21,9 +21,13 @@ namespace Operation.Controllers
 
         // GET api/missiles
         [HttpGet]
-        public ActionResult<IEnumerable<Missile>> GetMissiles()
+        public ActionResult<IEnumerable<Missile>> Get(MissileStatus? status = null)
         {
-            return Ok(missileService.Get());
+            var missiles = status != null ?
+                missileService.Get(status.Value)
+                : missileService.Get();
+
+            return Ok(missiles);
         }
 
         // // GET api/values/5

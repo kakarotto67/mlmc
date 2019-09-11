@@ -71,7 +71,7 @@ enum MissileType {
   SubmarineLaunched
 }
 
-enum MissileStatus {
+export enum MissileStatus {
   InService,
   Deployed,
   Launched,
