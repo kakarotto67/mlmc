@@ -21,6 +21,7 @@ export class ActiveMissilesComponent {
         x =>
           new Missile(
             x.missileId,
+            x.deploymentPlatformId,
             x.serviceIdentityNumber,
             x.name,
             x.type,

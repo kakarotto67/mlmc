@@ -1,21 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ActiveMissilesComponent } from './operation/activeMissiles.component';
 import { OperationRepository } from './repositories/operation/operation.repository';
 import { RestService } from './service/rest.service';
+import { CommissionMissileComponent } from './operation/commissionMissile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ActiveMissilesComponent
+    ActiveMissilesComponent,
+    CommissionMissileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [ OperationRepository, RestService ],
   bootstrap: [AppComponent]

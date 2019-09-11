@@ -1,12 +1,10 @@
 export class Missile {
-  //public type: string;
-  //public status: string;
-
   public typeString: string;
   public statusString: string;
 
   constructor(
     public missileId: number,
+    public deploymentPlatformId: number,
     public serviceIdentityNumber: string,
     public name: string,
     public type: number,

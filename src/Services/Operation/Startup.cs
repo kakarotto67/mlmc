@@ -28,11 +28,15 @@ namespace Operation
 
             services.AddScoped<IUnitOfWork, OperationDatabaseContext>();
             services.AddScoped<MissileService>();
+            services.AddScoped<DeploymentPlatformService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Configure cross-origin requests (CORS) so consumers can access this API
             services.AddCors(x => x.AddPolicy("Operation.Missiles",
+               builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
+
+            services.AddCors(x => x.AddPolicy("Operation.DeploymentPlatforms",
                builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
         }
 

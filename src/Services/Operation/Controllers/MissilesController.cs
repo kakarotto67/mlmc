@@ -30,18 +30,12 @@ namespace Operation.Controllers
             return Ok(missiles);
         }
 
-        // // GET api/values/5
-        // [HttpGet("{id}")]
-        // public ActionResult<string> Get(int id)
-        // {
-        //     return "value";
-        // }
-
-        // // POST api/values
-        // [HttpPost]
-        // public void Post([FromBody] string value)
-        // {
-        // }
+        // POST api/missiles
+        [HttpPost]
+        public void Post(int deploymentPlatformId, string name, int type)
+        {
+            missileService.Insert(deploymentPlatformId, name, type);
+        }
 
         // // PUT api/values/5
         // [HttpPut("{id}")]

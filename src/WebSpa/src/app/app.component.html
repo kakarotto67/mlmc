@@ -52,8 +52,8 @@
                 </li>
 
                 <li>
-                  <a class="sidenav-item-link" href="#">
-                    <span class="nav-text">Commision Missile</span>
+                  <a class="sidenav-item-link" (click)="commissionNewMissile()" href="#" data-toggle="modal" data-target="#CustomModal-Id">
+                    <span class="nav-text">Commission Missile</span>
 
                     <!-- <span class="badge badge-success">new</span> -->
                   </a>
@@ -277,6 +277,33 @@
       <div class="modal-footer">
         <button type="button" (click)="unloadActiveMissiles()" class="btn btn-primary btn-pill" data-dismiss="modal">Close</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="CustomModal-Id"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <commission-missile *ngIf="showCommissionMissile"></commission-missile>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="CustomModal2-Id"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
     </div>
   </div>
 </div>

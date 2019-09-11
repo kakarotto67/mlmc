@@ -7,9 +7,11 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
   private activeMissilesLoaded: boolean;
+  private commissionMissile: boolean;
 
   constructor() {
     this.activeMissilesLoaded = false;
+    this.commissionMissile = false;
   }
 
   public loadActiveMissiles() {
@@ -22,5 +24,13 @@ export class AppComponent {
 
   public get showActiveMissiles(): boolean {
     return this.activeMissilesLoaded;
+  }
+
+  public commissionNewMissile(){
+    this.commissionMissile = true;
+  }
+
+  public get showCommissionMissile(): boolean{
+    return this.commissionMissile;
   }
 }
