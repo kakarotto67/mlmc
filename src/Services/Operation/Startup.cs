@@ -41,11 +41,8 @@ namespace Operation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) //ILoggingBuilder loggingBuilder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // loggingBuilder.AddConsole();
-            // loggingBuilder.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

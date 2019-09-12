@@ -6,7 +6,8 @@ import { DeploymentPlatform } from "../repositories/models/deploymentPlatform.mo
 
 @Component({
   selector: "commission-missile",
-  templateUrl: "commissionMissile.component.html"
+  templateUrl: "commissionMissile.component.html",
+  styleUrls: ["./commissionMissile.component.scss"]
 })
 export class CommissionMissileComponent {
   private deploymentPlatformsArray: DeploymentPlatform[];
@@ -38,6 +39,6 @@ export class CommissionMissileComponent {
   }
 
   public commissionMissile() {
-      return this.operationRepo.createMissile(this.newMissile);
+     this.operationRepo.createMissile(this.newMissile);
   }
 }

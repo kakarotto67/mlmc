@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Operation.Models;
@@ -32,9 +32,16 @@ namespace Operation.Controllers
 
         // POST api/missiles
         [HttpPost]
-        public void Post(int deploymentPlatformId, string name, int type)
+        [AllowAnonymous]
+        public IActionResult Post([FromBody] Missile missile)
         {
-            missileService.Insert(deploymentPlatformId, name, type);
+            var result = missileService.Insert(missile);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
         // // PUT api/values/5

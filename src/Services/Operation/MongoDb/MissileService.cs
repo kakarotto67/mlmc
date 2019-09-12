@@ -21,29 +21,23 @@ namespace Operation.MongoDb
         internal IEnumerable<Missile> Get(MissileStatus status) => _missilesCollection
             .Find(missile => missile.Status == status).ToEnumerable();
 
-        internal void Insert(int deploymentPlatformId, string name, int type)
+        internal bool Insert(Missile missile)
         {
-            if (deploymentPlatformId < 0
-                || String.IsNullOrEmpty(name)
-                || type < 0)
+            if (missile == null)
             {
-                return;
+                return false;
             }
 
-            var missile = new Missile
-            {
-                MissileId = RandomHelper.GetTrueRandom(),
-                DeploymentPlatformId = deploymentPlatformId,
-                ServiceIdentityNumber = new Guid(),
-                Name = name,
-                Type = (MissileType)type,
-                Status = MissileStatus.InService,
-                InServiceDateStart = DateTime.UtcNow,
-                InServiceDateEnd = null
-            };
+            missile.MissileId = RandomHelper.GetTrueRandom();
+            missile.ServiceIdentityNumber = Guid.NewGuid();
+            missile.Status = MissileStatus.InService;
+            missile.InServiceDateStart = DateTime.UtcNow;
+            missile.InServiceDateEnd = null;
 
             // Insert new missile into database
             _missilesCollection.InsertOne(missile);
+
+            return true;
         }
     }
 }

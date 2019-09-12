@@ -4,54 +4,77 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <!-- // Show popup with
+
+<form #missileForm="ngForm">
+  <div class="modal-body">
+    <!-- // Show popup with
   // Platform dropdown (get platforms)
   // Name input
   // Missile Type dropdown (get types)
   // Rest values will be set automatically -->
-  <p>New missile will be commissioned immediately and bound to selected Deployment Platform.</p>
+    <p>New missile will be commissioned immediately and bound to selected Deployment Platform.</p>
 
-  <div class="mt-4" *ngIf="deploymentPlatforms?.length > 0; else nodata">
-    <p>Deployment Platform</p>
-    <select [(ngModel)]="newMissile.deploymentPlatformId">
-      <option value="" disabled selected>Select Deployment Platform</option>
-      <option
-        *ngFor="let deploymentPlatform of deploymentPlatforms"
-        [value]="deploymentPlatform.deploymentPlatformId"
-        >{{ deploymentPlatform.name }}</option
+    <div class="mt-4" *ngIf="deploymentPlatforms?.length > 0; else nodata">
+      <p>Deployment Platform</p>
+      <select name="missileDeploymentPlatform" [(ngModel)]="newMissile.deploymentPlatformId" required #missileDeploymentPlatform="ngModel">
+        <option value="" disabled selected>Select Deployment Platform</option>
+        <option
+          *ngFor="let deploymentPlatform of deploymentPlatforms"
+          [value]="deploymentPlatform.deploymentPlatformId"
+          >{{ deploymentPlatform.name }}</option
+        >
+      </select>
+      <span
+        *ngIf="missileDeploymentPlatform.invalid"
+        class="alert alert-danger validation-errors-inline"
       >
-    </select>
-  </div>
-  <ng-template #nodata>
-    <p class="mt-4">Loading deployment platforms list...</p>
-  </ng-template>
+        <span *ngIf="missileDeploymentPlatform.errors.required">
+          [ required ]
+        </span>
+      </span>
+    </div>
+    <ng-template #nodata>
+      <p class="mt-4">Loading deployment platforms list...</p>
+    </ng-template>
 
-  <div class="mt-4">
+    <div class="mt-4">
       <p>Missile Name</p>
-      <input [(ngModel)]="newMissile.name" />
-  </div>
+      <input name="missileName" [(ngModel)]="newMissile.name" required minlength="4" #missileName="ngModel" />
+      <span
+        *ngIf="missileName.invalid"
+        class="alert alert-danger validation-errors-inline"
+      >
+        <span *ngIf="missileName.errors.required">
+          [ required ]
+        </span>
+        <span *ngIf="missileName.errors.minlength">
+          [ must be at least 4 characters long ]
+        </span>
+      </span>
+    </div>
 
-  <div class="mt-4">
-        <p>Missile Type</p>
-        <select [(ngModel)]="newMissile.type">
-          <option value="" disabled selected>Select Missile Type</option>
-          <option value="0">Air-to-Air</option>
-          <option value="1">Air-to-Surface</option>
-          <option value="2">Surface-to-Surface</option>
-          <option value="3">Surface-to-Air</option>
-          <option value="4">Intercontinental Ballistic</option>
-          <option value="5">Submarine Launched</option>
-        </select>
-      </div>
-</div>
-<div class="modal-footer">
-  <button
-    type="button"
-    (click)="commissionMissile()"
-    class="btn btn-primary btn-pill"
-    data-dismiss="modal"
-  >
-    Commission
-  </button>
-</div>
+    <div class="mt-4">
+      <p>Missile Type</p>
+      <select name="missileType" [(ngModel)]="newMissile.type">
+        <option value="" disabled selected>Select Missile Type</option>
+        <option value="0">Air-to-Air</option>
+        <option value="1">Air-to-Surface</option>
+        <option value="2">Surface-to-Surface</option>
+        <option value="3">Surface-to-Air</option>
+        <option value="4">Intercontinental Ballistic</option>
+        <option value="5">Submarine Launched</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      [disabled]="missileForm.invalid"
+      (click)="commissionMissile()"
+      class="btn btn-primary btn-pill"
+      data-dismiss="modal"
+    >
+      Commission
+    </button>
+  </div>
+</form>

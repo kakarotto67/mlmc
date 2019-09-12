@@ -7,10 +7,6 @@ import { catchError } from "rxjs/operators";
 export class RestService {
   constructor(private http: HttpClient) {}
 
-  // public get httpClient() {
-  //   return this.http;
-  // }
-
   // Generic send request method
   public sendRequest<T>(
     verb: string,

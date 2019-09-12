@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Missile, MissileStatus } from "../models/missile.model";
 import { environment } from "src/environments/environment";
 import { DeploymentPlatform } from "../models/deploymentPlatform.model";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable()
 export class OperationRepository {
@@ -19,13 +20,22 @@ export class OperationRepository {
   }
 
   // Create new missile
-  public createMissile(missile: Missile): Observable<Missile> {
+  public createMissile(missile: Missile) {
     if (!missile) {
       return;
     }
 
-    var url = `${this.baseUri}/missiles?deploymentPlatformId=${missile.deploymentPlatformId}&name=${missile.name}&type=${missile.type}`;
-    return this.restService.sendRequest<Missile>("POST", url, missile);
+    var url = `${this.baseUri}/missiles`;
+    console.log(url);
+    var body = {
+      deploymentPlatformId: missile.deploymentPlatformId,
+      name: missile.name,
+      type: missile.type
+    };
+    var headers = new HttpHeaders({ "Content-Type": "application/json" });
+
+    // Subscribe needs to be called so the request will be performed
+    this.restService.sendRequest("POST", url, body, headers).subscribe();
   }
 
   // Get list of all available deployment platforms
