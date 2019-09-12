@@ -1,7 +1,7 @@
 # Use Azure Maps instead of Google Maps
 
 * Status: [accepted]
-* Deciders: [@kakarotto67]
+* Deciders: [[@kakarotto67](https://github.com/kakarotto67)]
 * Date: [2019-09-10]
 
 Technical Story: [Change map provider to Azure Maps](https://github.com/kakarotto67/mlmc/issues/3)
