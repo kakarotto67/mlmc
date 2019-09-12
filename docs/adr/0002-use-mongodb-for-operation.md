@@ -1,7 +1,7 @@
 # Use MongoDB for Operation service
 
 * Status: [accepted]
-* Deciders: [@kakarotto67]
+* Deciders: [[@kakarotto67](https://github.com/kakarotto67)]
 * Date: [2019-09-10]
 
 Technical Story: [Move Operation API to MongoDB](https://github.com/kakarotto67/mlmc/issues/2)
