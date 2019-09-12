@@ -1,4 +1,4 @@
-# Use Azure Maps instead of Google Maps
+# Use MongoDB for Operation service
 
 * Status: [accepted]
 * Deciders: [@kakarotto67]
