@@ -6,7 +6,7 @@ This log lists the architectural decisions for [MLMC].
 
 - [ADR-0000](0000-use-markdown-architectural-decision-records.md) - Use Markdown Architectural Decision Records
 - [ADR-0001](0001-use-azure-maps.md) - Use Azure Maps instead of Google Maps
-- [ADR-0002](0002-use-mongodb-for-operation.md) - Use Azure Maps instead of Google Maps
+- [ADR-0002](0002-use-mongodb-for-operation.md) - Use MongoDB for Operation service
 
 <!-- adrlogstop -->
 
