@@ -18,10 +18,6 @@ export class AppComponent {
     this.activeMissilesLoaded = true;
   }
 
-  public unloadActiveMissiles() {
-    this.activeMissilesLoaded = false;
-  }
-
   public get showActiveMissiles(): boolean {
     return this.activeMissilesLoaded;
   }
