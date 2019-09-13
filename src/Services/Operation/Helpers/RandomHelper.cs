@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Operation.Helpers
+namespace Mlmc.Operation.Helpers
 {
     internal static class RandomHelper
     {

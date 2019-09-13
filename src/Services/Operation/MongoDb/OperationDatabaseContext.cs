@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace Operation.MongoDb
+namespace Mlmc.Operation.MongoDb
 {
     internal class OperationDatabaseContext : IUnitOfWork
     {

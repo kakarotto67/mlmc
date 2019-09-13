@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Operation.Models;
-using Operation.MongoDb;
+using Mlmc.Operation.Models;
+using Mlmc.Operation.MongoDb;
 
-namespace Operation.Controllers
+namespace Mlmc.Operation.Controllers
 {
-    [EnableCors("Operation.Missiles")]
+    [EnableCors("Mlmc.Operation.Missiles")]
     [Route("api/[controller]")]
     [ApiController]
     public class MissilesController : ControllerBase

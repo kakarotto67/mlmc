@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { OperationRepository } from "../repositories/operation/operation.repository";
-import { Observable } from "rxjs";
 import { Missile, MissileStatus } from "../repositories/models/missile.model";
 
 @Component({

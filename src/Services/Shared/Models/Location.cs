@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Operation.Models
+namespace Mlmc.Shared.Models
 {
     public class Location
     {

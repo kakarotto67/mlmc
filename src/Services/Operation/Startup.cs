@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Operation.MongoDb;
+using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
+using Mlmc.Operation.MongoDb;
+using RabbitMQ.Client;
+using System;
 
-namespace Operation
+namespace Mlmc.Operation
 {
     public class Startup
     {
@@ -30,13 +33,26 @@ namespace Operation
             services.AddScoped<MissileService>();
             services.AddScoped<DeploymentPlatformService>();
 
+            // Setup RabbitMQ client
+            var connectionFactory = new ConnectionFactory
+            {
+                HostName = Configuration.GetValue<String>("MessageBusConfiguration:HostName")
+            };
+            services.AddSingleton<IConnectionFactory>(sp => connectionFactory);
+
+            // Setup Message Bus
+            services.AddScoped<MessageBus>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Configure cross-origin requests (CORS) so consumers can access this API
-            services.AddCors(x => x.AddPolicy("Operation.Missiles",
+            services.AddCors(x => x.AddPolicy("Mlmc.Operation.Missiles",
                builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
 
-            services.AddCors(x => x.AddPolicy("Operation.DeploymentPlatforms",
+            services.AddCors(x => x.AddPolicy("Mlmc.Operation.DeploymentPlatforms",
+               builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
+
+            services.AddCors(x => x.AddPolicy("Mlmc.Operation.LaunchMissile",
                builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
         }
 

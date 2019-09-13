@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
-using Operation.Models;
+using Mlmc.Operation.Models;
+using Mlmc.Shared.Models;
 
-namespace Operation.MongoDb
+namespace Mlmc.Operation.MongoDb
 {
     internal static class OperationDatabaseSeedHelper
     {

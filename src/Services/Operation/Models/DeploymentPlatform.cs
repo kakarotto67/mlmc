@@ -1,8 +1,9 @@
-﻿using MongoDB.Bson;
+﻿using Mlmc.Shared.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace Operation.Models
+namespace Mlmc.Operation.Models
 {
     public class DeploymentPlatform
     {

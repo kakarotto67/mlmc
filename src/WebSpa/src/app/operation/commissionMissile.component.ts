@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { OperationRepository } from "../repositories/operation/operation.repository";
-import { Observable } from "rxjs";
-import { Missile, MissileStatus } from "../repositories/models/missile.model";
+import { Missile } from "../repositories/models/missile.model";
 import { DeploymentPlatform } from "../repositories/models/deploymentPlatform.model";
 
 @Component({
@@ -15,6 +14,7 @@ export class CommissionMissileComponent {
   private newMissile: Missile;
 
   constructor(private operationRepo: OperationRepository) {
+    // TODO: Fix this
     // Initialize new missile with default values
     this.newMissile = new Missile(0, 1, "", "", 0, 0, "");
     this.getDeploymentPlatforms();

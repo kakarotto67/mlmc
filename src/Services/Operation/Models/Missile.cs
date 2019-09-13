@@ -1,8 +1,9 @@
 using System;
+using Mlmc.Shared.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Operation.Models
+namespace Mlmc.Operation.Models
 {
     public class Missile
     {
@@ -17,5 +18,6 @@ namespace Operation.Models
         public DateTime InServiceDateStart { get; set; }
         public DateTime? InServiceDateEnd { get; set; }
         public MissileStatus Status { get; set; }
+        public Location TargetLocation { get; set; }
     }
 }

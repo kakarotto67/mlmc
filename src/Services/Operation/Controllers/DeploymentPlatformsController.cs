@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Operation.Models;
-using Operation.MongoDb;
+using Mlmc.Operation.Models;
+using Mlmc.Operation.MongoDb;
 
-namespace Operation.Controllers
+namespace Mlmc.Operation.Controllers
 {
-    [EnableCors("Operation.DeploymentPlatforms")]
+    [EnableCors("Mlmc.Operation.DeploymentPlatforms")]
     [Route("api/[controller]")]
     [ApiController]
     public class DeploymentPlatformsController : ControllerBase

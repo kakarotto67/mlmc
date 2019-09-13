@@ -5,6 +5,7 @@ import { Missile, MissileStatus } from "../models/missile.model";
 import { environment } from "src/environments/environment";
 import { DeploymentPlatform } from "../models/deploymentPlatform.model";
 import { HttpHeaders } from "@angular/common/http";
+import { GpsLocation } from '../models/gpsLocation.model';
 
 @Injectable()
 export class OperationRepository {
@@ -14,7 +15,7 @@ export class OperationRepository {
 
   // Get list of filtered missiles
   public getMissiles(status: MissileStatus): Observable<Missile[]> {
-    var url = status ? `${this.baseUri}/missiles?status=${status}` : `${this.baseUri}/missiles`;
+    var url = status >= 0 ? `${this.baseUri}/missiles?status=${status}` : `${this.baseUri}/missiles`;
 
     return this.restService.sendRequest<Missile[]>("GET", url);
   }
@@ -26,11 +27,27 @@ export class OperationRepository {
     }
 
     var url = `${this.baseUri}/missiles`;
-    console.log(url);
     var body = {
       deploymentPlatformId: missile.deploymentPlatformId,
       name: missile.name,
       type: missile.type
+    };
+    var headers = new HttpHeaders({ "Content-Type": "application/json" });
+
+    // Subscribe needs to be called so the request will be performed
+    this.restService.sendRequest("POST", url, body, headers).subscribe();
+  }
+
+  // Launch a missile
+  public launchMissile(serviceIdentityNumber: string, targetLocation: GpsLocation) {
+    if (!serviceIdentityNumber || !targetLocation) {
+      return;
+    }
+
+    var url = `${this.baseUri}/launchmissile`;
+    var body = {
+      serviceIdentityNumber: serviceIdentityNumber,
+      targetLocation: targetLocation
     };
     var headers = new HttpHeaders({ "Content-Type": "application/json" });
 

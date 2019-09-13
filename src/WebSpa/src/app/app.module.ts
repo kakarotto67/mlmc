@@ -8,12 +8,14 @@ import { ActiveMissilesComponent } from './operation/activeMissiles.component';
 import { OperationRepository } from './repositories/operation/operation.repository';
 import { RestService } from './service/rest.service';
 import { CommissionMissileComponent } from './operation/commissionMissile.component';
+import { LaunchMissileComponent } from './operation/launchMissile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ActiveMissilesComponent,
-    CommissionMissileComponent
+    CommissionMissileComponent,
+    LaunchMissileComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Operation.Models
+namespace Mlmc.Operation.Models
 {
     public enum MissileStatus
     {
         [Display(Name = "In Service")]
         InService,
+        // Not used for now
         [Display(Name = "Deployed")]
         Deployed,
         [Display(Name = "Launched")]

@@ -1,0 +1,83 @@
+<div class="modal-header">
+  <h5 class="modal-title">Launch The Missile</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form #launchMissileForm="ngForm">
+  <div class="modal-body">
+    <!-- // Show popup with
+              [ Guid of missile to be manually entered ]
+              [ Target location have to be chosen ]
+              [ Launch button ] -->
+    <p>
+      Selected missile will be immediately launched from its deployment platform in the direction of
+      selected target.
+    </p>
+
+    <div class="mt-4">
+      <p class="form-input-label">Missile Service Identity Number (enter manually)</p>
+      <input
+        name="missileSin"
+        [(ngModel)]="missileServiceIdentityNumber"
+        required
+        #missileSin="ngModel"
+      />
+      <span
+        *ngIf="missileSin.invalid"
+        class="alert alert-danger validation-errors-inline"
+      >
+        <span *ngIf="missileSin.errors.required">
+          [ required ]
+        </span>
+      </span>
+    </div>
+
+    <div class="mt-4">
+      <p class="form-input-label">Missile Target Coordinates</p>
+      <p>Longitude:</p>
+      <input
+        name="missileTargetLocationLongitude"
+        [(ngModel)]="targetLocation.longitude"
+        required
+        #missileTargetLocationLongitude="ngModel"
+      />
+      <span
+        *ngIf="missileTargetLocationLongitude.invalid"
+        class="alert alert-danger validation-errors-inline"
+      >
+        <span *ngIf="missileTargetLocationLongitude.errors.required">
+          [ required ]
+        </span>
+      </span>
+
+      <p>Latitude:</p>
+      <input
+        name="missileTargetLocationLatitude"
+        [(ngModel)]="targetLocation.latitude"
+        required
+        #missileTargetLocationLatitude="ngModel"
+      />
+      <span
+        *ngIf="missileTargetLocationLatitude.invalid"
+        class="alert alert-danger validation-errors-inline"
+      >
+        <span *ngIf="missileTargetLocationLatitude.errors.required">
+          [ required ]
+        </span>
+      </span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      [disabled]="launchMissileForm.invalid"
+      (click)="launchMissile()"
+      class="btn btn-primary btn-pill"
+      data-dismiss="modal"
+    >
+      Launch
+    </button>
+  </div>
+</form>

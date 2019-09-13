@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
-namespace Operation
+namespace Mlmc.Operation
 {
     public class Program
     {
@@ -12,6 +14,14 @@ namespace Operation
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                var env = hostingContext.HostingEnvironment;
+                var esbSettingsLocation = Path.Combine(env.ContentRootPath, "..",
+                    "EnterpriseServiceBus", "esb-settings.json");
+
+                config.AddJsonFile(esbSettingsLocation, optional: false, reloadOnChange: false);
+            })
+            .UseStartup<Startup>();
     }
 }

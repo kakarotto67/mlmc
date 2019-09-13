@@ -46,7 +46,7 @@
             <ul class="collapse show" id="dashboard" data-parent="#sidebar-menu">
               <div class="sub-menu">
                 <li class="active">
-                  <a class="sidenav-item-link" (click)="loadActiveMissiles()" href="#" data-toggle="modal" data-target="#activeMissilesModal">
+                  <a class="sidenav-item-link" (click)="loadActiveMissiles()" href="#" data-toggle="modal" data-target="#CustomModal-Large-Id">
                     <span class="nav-text">Active Missiles</span>
                   </a>
                 </li>
@@ -60,7 +60,7 @@
                 </li>
 
                 <li>
-                  <a class="sidenav-item-link" href="#">
+                  <a class="sidenav-item-link" (click)="launchNewMissile()" href="#" data-toggle="modal" data-target="#CustomModal-Large-Id">
                     <span class="nav-text">Launch Missile</span>
                   </a>
                 </li>
@@ -254,7 +254,7 @@
 <!-- Large modal -->
 <div
   class="modal fade"
-  id="activeMissilesModal"
+  id="CustomModal-Large-Id"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
@@ -262,6 +262,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <active-missiles *ngIf="showActiveMissiles"></active-missiles>
+      <launch-missile *ngIf="showLaunchMissile"></launch-missile>
     </div>
   </div>
 </div>

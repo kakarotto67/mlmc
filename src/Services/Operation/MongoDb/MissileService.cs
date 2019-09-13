@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
-using Operation.Helpers;
-using Operation.Models;
+using Mlmc.Operation.Helpers;
+using Mlmc.Operation.Models;
 
-namespace Operation.MongoDb
+namespace Mlmc.Operation.MongoDb
 {
     public class MissileService
     {
@@ -18,8 +18,21 @@ namespace Operation.MongoDb
         internal IEnumerable<Missile> Get() => _missilesCollection
             .Find(missile => true).ToEnumerable();
 
+        internal Missile Get(Guid serviceIdentityNumber) => _missilesCollection
+            .Find(missile => missile.ServiceIdentityNumber == serviceIdentityNumber).FirstOrDefault();
+
         internal IEnumerable<Missile> Get(MissileStatus status) => _missilesCollection
             .Find(missile => missile.Status == status).ToEnumerable();
+
+        internal bool Update(Guid serviceIdentityNumber, MissileStatus newStatus)
+        {
+            var filter = Builders<Missile>.Filter.Eq(s => s.ServiceIdentityNumber, serviceIdentityNumber);
+            var update = Builders<Missile>.Update.Set(s => s.Status, newStatus);
+
+            var updateResult = _missilesCollection.UpdateOne(filter, update);
+
+            return updateResult.MatchedCount < 1 || updateResult.ModifiedCount == 1;
+        }
 
         internal bool Insert(Missile missile)
         {

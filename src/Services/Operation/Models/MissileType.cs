@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Operation.Models
+namespace Mlmc.Operation.Models
 {
     public enum MissileType
     {

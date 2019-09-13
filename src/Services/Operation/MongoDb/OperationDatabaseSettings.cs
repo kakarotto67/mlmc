@@ -1,4 +1,4 @@
-namespace Operation.MongoDb
+namespace Mlmc.Operation.MongoDb
 {
     internal class OperationDatabaseSettings : IOperationDatabaseSettings
     {

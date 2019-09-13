@@ -10,7 +10,8 @@ export class Missile {
     public type: number,
     public status: number,
     public inServiceDateStart: string,
-    public inServiceDateEnd?: any
+    public inServiceDateEnd?: any,
+    public targetLocation?: Location
   ) {
     this.typeString = MissileTypeHelper.toDisplayValue(type);
     this.statusString = MissileStatusHelper.toDisplayValue(status);

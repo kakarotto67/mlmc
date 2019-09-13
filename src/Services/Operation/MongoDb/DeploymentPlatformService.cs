@@ -1,9 +1,9 @@
-﻿using MongoDB.Driver;
-using Operation.Models;
+﻿using Mlmc.Operation.Models;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Operation.MongoDb
+namespace Mlmc.Operation.MongoDb
 {
     public class DeploymentPlatformService
     {
