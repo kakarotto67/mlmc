@@ -11,8 +11,9 @@ export class LaunchMissileComponent {
   private targetLocation: GpsLocation;
 
   constructor(private operationRepo: OperationRepository) {
+      // Initialize with default values
       this.missileServiceIdentityNumber = null;
-      this.targetLocation = new GpsLocation(0, 0);
+      this.targetLocation = new GpsLocation(37.617561, 55.752035);
   }
 
   public launchMissile() {
