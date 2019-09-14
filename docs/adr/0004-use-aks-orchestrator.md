@@ -30,7 +30,7 @@ Decided to use AKS since
 * It is more powerfull than ASF
 * It is more suitable for Docker containers hosting
 * ASF have to be used when you plan to use its programming model (stateless services, stateful services, actors), but I didn't need that
-* Kubernetes seems more popuplar and evolved
+* Kubernetes seems more popular and evolved
 * Kubernetes has managed implementation for Azure - AKS
 
 ### Positive Consequences
