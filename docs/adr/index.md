@@ -8,6 +8,8 @@ This log lists the architectural decisions for [MLMC].
 - [ADR-0001](0001-use-azure-maps.md) - Use Azure Maps instead of Google Maps
 - [ADR-0002](0002-use-mongodb-for-operation.md) - Use MongoDB for Operation service
 - [ADR-0003](0003-use-rabbit-mq-for-eda.md) - Use RabbitMQ for messaging & publish-subsribe pattern
+- [ADR-0004](0004-use-aks-orchestrator.md) - Use AKS orchestrator for the MLMC app
+- [ADR-0005](0005-use-api-gateway.md) - Use API Gateway for MLMC app
 
 <!-- adrlogstop -->
 
