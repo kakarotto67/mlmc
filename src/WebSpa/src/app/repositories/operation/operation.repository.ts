@@ -5,7 +5,7 @@ import { Missile, MissileStatus } from "../models/missile.model";
 import { environment } from "src/environments/environment";
 import { DeploymentPlatform } from "../models/deploymentPlatform.model";
 import { HttpHeaders } from "@angular/common/http";
-import { GpsLocation } from '../models/gpsLocation.model';
+import { GpsLocation } from "../models/gpsLocation.model";
 
 @Injectable()
 export class OperationRepository {
@@ -15,7 +15,8 @@ export class OperationRepository {
 
   // Get list of filtered missiles
   public getMissiles(status: MissileStatus): Observable<Missile[]> {
-    var url = status >= 0 ? `${this.baseUri}/missiles?status=${status}` : `${this.baseUri}/missiles`;
+    var url =
+      status >= 0 ? `${this.baseUri}/missiles?status=${status}` : `${this.baseUri}/missiles`;
 
     return this.restService.sendRequest<Missile[]>("GET", url);
   }
@@ -53,6 +54,25 @@ export class OperationRepository {
 
     // Subscribe needs to be called so the request will be performed
     this.restService.sendRequest("POST", url, body, headers).subscribe();
+  }
+
+  // Decommission a missile
+  public decommissionMissile(serviceIdentityNumber: string) {
+    if (!serviceIdentityNumber) {
+      return;
+    }
+
+    // TODO
+    // Currently missile is deleted on Decommission,
+    // but it is enough to just update its status to 'Decommissioned'.
+    var url = `${this.baseUri}/missiles`;
+    var body = {
+      serviceIdentityNumber: serviceIdentityNumber
+    };
+    var headers = new HttpHeaders({ "Content-Type": "application/json" });
+
+    // Subscribe needs to be called so the request will be performed
+    this.restService.sendRequest("DELETE", url, body, headers).subscribe();
   }
 
   // Get list of all available deployment platforms

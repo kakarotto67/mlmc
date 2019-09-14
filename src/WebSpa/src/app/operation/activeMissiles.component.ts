@@ -8,9 +8,12 @@ import { Missile, MissileStatus } from "../repositories/models/missile.model";
 })
 export class ActiveMissilesComponent {
   private activeMissilesArray: Missile[];
+  private showDecommissionMissilePopup: boolean;
+  public missileToDecommissionServiceIdentityNumber : string;
 
   constructor(private operationRepo: OperationRepository) {
     this.getActiveMissiles();
+    this.showDecommissionMissilePopup = false;
   }
 
   // This leads to real time calls to API
@@ -34,5 +37,14 @@ export class ActiveMissilesComponent {
 
   public get activeMissiles(): Missile[] {
     return this.activeMissilesArray;
+  }
+
+  public decommissionMissile(serviceIdentityNumber: string) {
+    this.missileToDecommissionServiceIdentityNumber = serviceIdentityNumber;
+    this.showDecommissionMissilePopup = true;
+  }
+
+  public get showDecommissionMissile(): boolean {
+    return this.showDecommissionMissilePopup;
   }
 }

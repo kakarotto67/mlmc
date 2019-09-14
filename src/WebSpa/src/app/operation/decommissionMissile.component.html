@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h5 class="modal-title">Decommission The Missile</h5>
+  <button
+    type="button"
+    class="close"
+    onclick="$('#ActiveMissiles-Modal2-Id').modal('hide')"
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <p>
+    Are you sure you want to decommission the missile
+    <span class="font-weight-bold">{{ missileServiceIdentityNumber }}</span
+    >?
+  </p>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-default btn-pill"
+    onclick="$('#ActiveMissiles-Modal2-Id').modal('hide')"
+  >
+    Close
+  </button>
+  <button
+    type="button"
+    (click)="decommissionMissile()"
+    class="btn btn-primary btn-pill"
+    onclick="$('#ActiveMissiles-Modal2-Id').modal('hide')"
+  >
+    Decommission
+  </button>
+</div>

@@ -44,6 +44,20 @@ namespace Mlmc.Operation.Controllers
             return BadRequest();
         }
 
+        // DELETE api/missiles
+        [HttpDelete]
+        [AllowAnonymous]
+        public IActionResult Delete([FromBody] Missile missile)
+        {
+            var result = missileService.Delete(missile.ServiceIdentityNumber);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         // // PUT api/values/5
         // [HttpPut("{id}")]
         // public void Put(int id, [FromBody] string value)

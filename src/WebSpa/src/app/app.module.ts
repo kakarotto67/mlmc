@@ -9,13 +9,15 @@ import { OperationRepository } from './repositories/operation/operation.reposito
 import { RestService } from './service/rest.service';
 import { CommissionMissileComponent } from './operation/commissionMissile.component';
 import { LaunchMissileComponent } from './operation/launchMissile.component';
+import { DecommissionMissileComponent } from './operation/decommissionMissile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ActiveMissilesComponent,
     CommissionMissileComponent,
-    LaunchMissileComponent
+    LaunchMissileComponent,
+    DecommissionMissileComponent
   ],
   imports: [
     BrowserModule,

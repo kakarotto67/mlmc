@@ -8,7 +8,18 @@
   <div *ngIf="activeMissiles?.length > 0; else nodata">
     <div *ngFor="let missile of activeMissiles">
       <div>
-        {{ missile.serviceIdentityNumber }} | {{ missile.name }} | {{ missile.typeString }} | {{ missile.statusString }}
+        {{ missile.serviceIdentityNumber }} | {{ missile.name }} | {{ missile.typeString }} |
+        {{ missile.statusString }}
+        <div>
+          <a
+            href="#"
+            (click)="decommissionMissile(missile.serviceIdentityNumber)"
+            data-toggle="modal"
+            data-target="#ActiveMissiles-Modal2-Id"
+            >[ Decommission ]</a
+          >
+        </div>
+        <br />
       </div>
     </div>
   </div>
@@ -17,11 +28,25 @@
   </ng-template>
 </div>
 <div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-primary btn-pill"
-    data-dismiss="modal"
-  >
+  <button type="button" class="btn btn-primary btn-pill" data-dismiss="modal">
     Close
   </button>
+</div>
+
+<!-- Active Missiles modal (2nd level) -->
+<div
+  class="modal fade"
+  id="ActiveMissiles-Modal2-Id"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <decommission-missile
+        *ngIf="showDecommissionMissile"
+        [missileToDecommissionServiceIdentityNumber]="missileToDecommissionServiceIdentityNumber"
+      ></decommission-missile>
+    </div>
+  </div>
 </div>

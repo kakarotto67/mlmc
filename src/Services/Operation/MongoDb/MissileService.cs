@@ -52,5 +52,16 @@ namespace Mlmc.Operation.MongoDb
 
             return true;
         }
+
+        // TODO
+        // Currently missile is deleted on Decommission,
+        // but it is enough to just update its status to 'Decommissioned'.
+        internal bool Delete(Guid serviceIdentityNumber)
+        {
+            var deleteResult = _missilesCollection
+                .DeleteOne(x => x.ServiceIdentityNumber == serviceIdentityNumber);
+
+            return deleteResult.DeletedCount <= 1;
+        }
     }
 }
