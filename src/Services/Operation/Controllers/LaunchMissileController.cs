@@ -17,14 +17,17 @@ namespace Mlmc.Operation.Controllers
     public class LaunchMissileController : ControllerBase
     {
         private readonly MissileService missileService;
+        private readonly DeploymentPlatformService deploymentPlatformService;
         private readonly MessageBus messageBus;
         private readonly IConfiguration configuration;
 
         public LaunchMissileController(MissileService missileService,
+            DeploymentPlatformService deploymentPlatformService,
             MessageBus messageBus,
             IConfiguration configuration)
         {
             this.missileService = missileService;
+            this.deploymentPlatformService = deploymentPlatformService;
             this.messageBus = messageBus;
             this.configuration = configuration;
         }
@@ -45,11 +48,18 @@ namespace Mlmc.Operation.Controllers
                 return BadRequest();
             }
 
+            var deploymentPlatform = deploymentPlatformService.Get(missileFromDatabase.DeploymentPlatformId);
+            if (deploymentPlatform == null)
+            {
+                return BadRequest();
+            }
+
             var eventMessage = new LaunchMissileEvent
             {
                 MissileServiceIdentityNumber = missile.ServiceIdentityNumber,
                 MissileName = missileFromDatabase.Name,
                 LaunchDate = DateTime.UtcNow,
+                DeploymentPlatformLocation = deploymentPlatform.Location,
                 TargetLocation = missile.TargetLocation
             };
 

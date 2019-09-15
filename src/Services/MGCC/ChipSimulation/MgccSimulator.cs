@@ -25,7 +25,7 @@ namespace Mlmc.MGCC.ChipSimulation
 
         private void SimulationEngine(LaunchMissileEvent eventMessage)
         {
-            var deploymentPlatformLocation = new Location();
+            var deploymentPlatformLocation = eventMessage.DeploymentPlatformLocation;
             var targetLocation = eventMessage.TargetLocation;
 
             var launchedMissileCurrentStatusEvent = new LaunchedMissileCurrentStatusEvent

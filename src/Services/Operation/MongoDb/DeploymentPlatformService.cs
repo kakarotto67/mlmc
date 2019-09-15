@@ -17,5 +17,8 @@ namespace Mlmc.Operation.MongoDb
 
         internal IEnumerable<DeploymentPlatform> Get() => _deploymentPlatformCollection
             .Find(dp => true).ToEnumerable();
+
+        internal DeploymentPlatform Get(long deploymentPlatformId) => _deploymentPlatformCollection
+            .Find(dp => dp.DeploymentPlatformId == deploymentPlatformId).FirstOrDefault();
     }
 }
