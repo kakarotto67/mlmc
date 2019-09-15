@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Mlmc.Operation.Models;
+using Mlmc.Shared.Models;
 using Mlmc.Operation.MongoDb;
+using Mlmc.Operation.Models;
 
 namespace Mlmc.Operation.Controllers
 {

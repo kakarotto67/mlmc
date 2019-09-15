@@ -6,6 +6,7 @@ using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
 using Mlmc.Operation.Models;
 using Mlmc.Operation.MongoDb;
 using Mlmc.Shared.Events;
+using Mlmc.Shared.Models;
 using System;
 
 namespace Mlmc.Operation.Controllers

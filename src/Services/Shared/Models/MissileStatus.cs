@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mlmc.Operation.Models
+namespace Mlmc.Shared.Models
 {
     public enum MissileStatus
     {

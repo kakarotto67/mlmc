@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MongoDB.Driver;
 using Mlmc.Operation.Helpers;
 using Mlmc.Operation.Models;
+using Mlmc.Shared.Models;
 
 namespace Mlmc.Operation.MongoDb
 {
