@@ -43,9 +43,8 @@ namespace Mlmc.MGCC.ChipSimulation
             var distance = CoordinatesHelper.GetDistance(deploymentPlatformLocation, targetLocation);
             if(distance <= StepInKm)
             {
-                launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
-
                 // Post final information about launched missile
+                launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
                 PostCurrentStatusEvent(launchedMissileCurrentStatusEvent);
 
                 return;
@@ -68,15 +67,13 @@ namespace Mlmc.MGCC.ChipSimulation
                     CoordinatesHelper.GetIntermediateLocation(
                         deploymentPlatformLocation, targetLocation, currentDistance);
 
-                launchedMissileCurrentStatusEvent.SetIntermediaryInfo(currentMissileGpsLocation);
-
                 // Post current status information about launched missile
+                launchedMissileCurrentStatusEvent.SetIntermediaryInfo(currentMissileGpsLocation);
                 PostCurrentStatusEvent(launchedMissileCurrentStatusEvent);
             }
 
-            launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
-
             // Post final information about launched missile
+            launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
             PostCurrentStatusEvent(launchedMissileCurrentStatusEvent);
         }
 
