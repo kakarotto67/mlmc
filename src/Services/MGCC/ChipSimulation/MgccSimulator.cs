@@ -89,7 +89,9 @@ namespace Mlmc.MGCC.ChipSimulation
             Task.Delay(1000);
 
             // TODO: Implement
-            // Post into queue or post into database?
+            // Post SignalR message with current status and GPS coordinates
+            // of launched missile so it can be handled on UI map.
+            // Create MGCC.API that will have method to Post message or post directly from console app
         }
     }
 }
