@@ -14,7 +14,7 @@ export class CommissionMissileComponent {
   private newMissile: Missile;
 
   constructor(private operationRepo: OperationRepository) {
-    // TODO: Fix this
+    // TODO: Fix the intialization below
     // Initialize new missile with default values
     this.newMissile = new Missile(0, 1, "", "", 0, 0, "");
     this.getDeploymentPlatforms();
