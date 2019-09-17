@@ -15,7 +15,7 @@ namespace Mlmc.MGCC.ChipSimulation
 
         public void RunNewSimulation(LaunchMissileEvent eventMessage)
         {
-            if(eventMessage == null)
+            if (eventMessage == null)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Mlmc.MGCC.ChipSimulation
             PostCurrentStatusEvent(launchedMissileCurrentStatusEvent);
 
             var distance = CoordinatesHelper.GetDistance(deploymentPlatformLocation, targetLocation);
-            if(distance <= StepInKm)
+            if (distance <= StepInKm)
             {
                 // Post final information about launched missile
                 launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
@@ -57,7 +57,7 @@ namespace Mlmc.MGCC.ChipSimulation
                 currentDistance += StepInKm;
 
                 // Dobule check if current distance is less than total distance
-                if(currentDistance >= distance)
+                if (currentDistance >= distance)
                 {
                     break;
                 }
@@ -79,7 +79,7 @@ namespace Mlmc.MGCC.ChipSimulation
 
         private void PostCurrentStatusEvent(LaunchedMissileCurrentStatusEvent eventMessage)
         {
-            if(eventMessage == null)
+            if (eventMessage == null)
             {
                 return;
             }
@@ -92,6 +92,10 @@ namespace Mlmc.MGCC.ChipSimulation
             // Post SignalR message with current status and GPS coordinates
             // of launched missile so it can be handled on UI map.
             // Create MGCC.API that will have method to Post message or post directly from console app
+
+
+            // TODO: Implement
+            // If this is final event - also post message to Missile Finished Queue of Message Bus
         }
     }
 }
