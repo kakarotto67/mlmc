@@ -26,7 +26,7 @@ Decided to simply push SignalR messages directly from MGCC module.
 
 ### Positive Consequences
 
-* Initially I planned to post current missile status to Message Bus, then process it to CosmosDB, then have Azure Function to send SignalR message. But that seemed to complicated. With direct SignalR messages from MGCC module the implementation will be must easier and faster.
+* Initially I planned to post current missile status to Message Bus, then process it to CosmosDB, then have Azure Function to send SignalR messages. But that seemed too complicated. With direct SignalR messages from MGCC module the implementation will be much easier and faster.
 
 ### Negative Consequences
 
