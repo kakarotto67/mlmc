@@ -10,6 +10,7 @@ This log lists the architectural decisions for [MLMC].
 - [ADR-0003](0003-use-rabbit-mq-for-eda.md) - Use RabbitMQ for messaging & publish-subsribe pattern
 - [ADR-0004](0004-use-aks-orchestrator.md) - Use AKS orchestrator for the MLMC app
 - [ADR-0005](0005-use-api-gateway.md) - Use API Gateway for MLMC app
+- [ADR-0006](0006-call-signalr-directly-from-mgcc.md) - Post launched active missile status updates directly from MGCC via SignalR
 
 <!-- adrlogstop -->
 
