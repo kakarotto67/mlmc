@@ -1,16 +1,33 @@
-﻿using Mlmc.Shared.Events;
+﻿using Microsoft.Extensions.Configuration;
+using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
+using Mlmc.Shared.Events;
 using Mlmc.Shared.Models;
+using Newtonsoft.Json;
 using System;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Mlmc.MGCC.ChipSimulation
+namespace Mlmc.MGCC.Api.ChipSimulation
 {
     internal class MgccSimulator
     {
-        private const int StepInKm = 100;
+        private int stepInKm;
+        private readonly MessageBus messageBus;
+        private readonly IConfiguration configuration;
+        private readonly IHttpClientFactory clientFactory;
 
-        public MgccSimulator()
+        public MgccSimulator(MessageBus messageBus, IConfiguration configuration, IHttpClientFactory clientFactory)
         {
+            this.messageBus = messageBus;
+            this.configuration = configuration;
+            this.clientFactory = clientFactory;
+        }
+
+        public void SetStepInKm(int stepInKm)
+        {
+            var defaultStepInKm = 100;
+            this.stepInKm = stepInKm > 0 ? stepInKm : defaultStepInKm;
         }
 
         public void RunNewSimulation(LaunchMissileEvent eventMessage)
@@ -41,7 +58,7 @@ namespace Mlmc.MGCC.ChipSimulation
             PostCurrentStatusEvent(launchedMissileCurrentStatusEvent);
 
             var distance = CoordinatesHelper.GetDistance(deploymentPlatformLocation, targetLocation);
-            if (distance <= StepInKm)
+            if (distance <= stepInKm)
             {
                 // Post final information about launched missile
                 launchedMissileCurrentStatusEvent.SetFinalInfo(targetLocation);
@@ -51,10 +68,10 @@ namespace Mlmc.MGCC.ChipSimulation
             }
 
             var currentDistance = 0;
-            var maxNotificationsBeforeFinish = (Int32)Math.Floor(distance / StepInKm);
+            var maxNotificationsBeforeFinish = (Int32)Math.Floor(distance / stepInKm);
             for (var i = 0; i < maxNotificationsBeforeFinish; i++)
             {
-                currentDistance += StepInKm;
+                currentDistance += stepInKm;
 
                 // Dobule check if current distance is less than total distance
                 if (currentDistance >= distance)
@@ -88,14 +105,58 @@ namespace Mlmc.MGCC.ChipSimulation
             // 1 second delay
             Task.Delay(1000);
 
-            // TODO: Implement
             // Post SignalR message with current status and GPS coordinates
             // of launched missile so it can be handled on UI map.
-            // Create MGCC.API that will have method to Post message or post directly from console app
+            PostSignalRMessage(eventMessage);
 
-
-            // TODO: Implement
             // If this is final event - also post message to Missile Finished Queue of Message Bus
+            if (eventMessage.IsFinished)
+            {
+                PostMissileFinishedEvent(eventMessage);
+            }
+        }
+
+        private void PostSignalRMessage(LaunchedMissileCurrentStatusEvent eventMessage)
+        {
+            if (eventMessage == null)
+            {
+                return;
+            }
+
+            using (var client = clientFactory.CreateClient())
+            {
+                // TODO: Move to settings
+                var uri = configuration.GetValue<String>("ApiPath:Mgcc");
+
+                var eventJson = JsonConvert.SerializeObject(eventMessage);
+
+                var contentToPost = new StringContent(eventJson, Encoding.UTF8, "application/json");
+
+                // TODO: Check the response
+                var postResult = client.PostAsync(uri, contentToPost).Result;
+            }
+        }
+
+        private void PostMissileFinishedEvent(LaunchedMissileCurrentStatusEvent eventMessage)
+        {
+            if (eventMessage == null || !eventMessage.IsFinished)
+            {
+                return;
+            }
+
+            // Publish missile finished message
+            var finishedMissilesQueue = configuration
+                .GetValue<String>("MessageBusConfiguration:Queues:FinishedMissilesQueue");
+            // TODO: Add more info
+            var missileFinishedEvent = new MissileFinishedEvent
+            {
+                MissileServiceIdentityNumber = eventMessage.MissileServiceIdentityNumber,
+                MissileName = eventMessage.MissileName,
+                MissileStatus = eventMessage.MissileStatus,
+                MissileFinishedAtLocation = eventMessage.MissileGpsLocation,
+                MissileFinishedAtDate = eventMessage.InformationPostedDate
+            };
+            messageBus.PublishMessage(finishedMissilesQueue, missileFinishedEvent);
         }
     }
 }

@@ -63,9 +63,9 @@ namespace Mlmc.Operation.Controllers
                 TargetLocation = missile.TargetLocation
             };
 
-            var launchMissileQueue = configuration.GetValue<String>("MessageBusConfiguration:Queues:LaunchCenterQueue");
-
             // Publish launch missile message
+            var launchMissileQueue = configuration
+                .GetValue<String>("MessageBusConfiguration:Queues:LaunchCenterQueue");
             messageBus.PublishMessage(launchMissileQueue, eventMessage);
 
             // Update status of the missile to 'Launched'

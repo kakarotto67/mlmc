@@ -3,7 +3,6 @@
       "HostName": "localhost",
       "Queues": {
          "LaunchCenterQueue": "MissileLaunchCenterQueue",
-         "GpsMonitoringQueue": "GpsMonitoringQueue",
          "FinishedMissilesQueue": "FinishedMissilesQueue"
       }
    }

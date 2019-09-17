@@ -1,7 +1,7 @@
 ﻿using Mlmc.Shared.Models;
 using System;
 
-namespace Mlmc.MGCC.ChipSimulation
+namespace Mlmc.MGCC.Api.ChipSimulation
 {
     internal static class CoordinatesHelper
     {

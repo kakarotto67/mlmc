@@ -73,6 +73,11 @@ namespace Mlmc.Operation
             app.UseMvc();
 
             // Initialize Database with default data
+            SeedDatabase(app);
+        }
+
+        private void SeedDatabase(IApplicationBuilder app)
+        {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var services = serviceScope.ServiceProvider;
