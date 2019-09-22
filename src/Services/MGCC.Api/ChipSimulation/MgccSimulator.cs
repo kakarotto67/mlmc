@@ -91,7 +91,7 @@ namespace Mlmc.MGCC.Api.ChipSimulation
                        deploymentPlatformLocation.Latitude,
                        deploymentPlatformLocation.Longitude,
                        targetLocation.Latitude,
-                       targetLocation.Longitude, 0.1);
+                       targetLocation.Longitude, currentDistance);
 
                 // Post current status information about launched missile
                 launchedMissileCurrentStatusEvent.SetIntermediaryInfo(currentMissileGpsLocation);

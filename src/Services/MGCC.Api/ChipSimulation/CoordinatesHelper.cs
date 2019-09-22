@@ -7,6 +7,7 @@ namespace Mlmc.MGCC.Api.ChipSimulation
     {
         private const int EarthRadiusKm = 6371;
         private const double RadianCoeff = Math.PI / 180;
+        private const double DegreesCoeff = 180 / Math.PI;
 
         /// <summary>
         /// Get distance in km between two GPS points.
@@ -64,26 +65,95 @@ namespace Mlmc.MGCC.Api.ChipSimulation
         internal static Location GetIntermediateLocation(double lat1, double lon1,
                                        double lat2, double lon2, double dist)
         {
-            double constant = Math.PI / 180;
-            double angular = dist / 6371;
+            // https://www.movable-type.co.uk/scripts/latlong.html
 
-            double a = Math.Sin(0 * angular) / Math.Sin(angular);
-            double b = Math.Sin(1 * angular) / Math.Sin(angular);
+            // φ is latitude, λ is longitude
 
-            double x = a * Math.Cos(lat1 * constant) * Math.Cos(lon1 * constant) +
-                       b * Math.Cos(lat2 * constant) * Math.Cos(lon2 * constant);
-            double y = a * Math.Cos(lat1 * constant) * Math.Sin(lon1 * constant) +
-                       b * Math.Cos(lat2 * constant) * Math.Sin(lon2 * constant);
-            double z = a * Math.Sin(lat1 * constant) + b * Math.Sin(lat2 * constant);
+            // I. Bearing to Find Bearing
+            var bearing = FindInitialBearing(lat1, lon1, lat2, lon2);
 
-            double lat3 = Math.Atan2(z, Math.Sqrt(x * x + y * y));
-            double lon3 = Math.Atan2(y, x);
+            // II. Then 'Destination point given distance and bearing from start point'
+            // to find the point
+
+            return FindDestinationForGivenStartPointAndBearing(lat1, lon1, bearing, dist);
+        }
+
+        private static double FindInitialBearing(double lat1, double lon1, double lat2, double lon2)
+        {
+            var f1 = lat1 * RadianCoeff;
+            var f2 = lat2 * RadianCoeff;
+            var lonDelta = (lon2 - lon1) * RadianCoeff;
+
+            var x = Math.Cos(f1) * Math.Sin(f2) - Math.Sin(f1) * Math.Cos(f2) * Math.Cos(lonDelta);
+            var y = Math.Sin(lonDelta) * Math.Cos(f2);
+            var t = Math.Atan2(y, x);
+
+            var bearing = t * DegreesCoeff;
+
+            return Wrap360(bearing);
+        }
+
+        private static Location FindDestinationForGivenStartPointAndBearing(double lat1, double lon1,
+            double bearing, double distance)
+        {
+            var radius = 6371;// e3;
+
+            var angular = distance / radius; // angular distance in radians
+            var t = bearing * RadianCoeff;
+
+            var f1 = lat1 * RadianCoeff;
+            var l1 = lon1 * RadianCoeff;
+
+            var sinf2 = Math.Sin(f1) * Math.Cos(angular) + Math.Cos(f1) * Math.Sin(angular) * Math.Cos(t);
+            var f2 = Math.Asin(sinf2);
+            var y = Math.Sin(t) * Math.Sin(angular) * Math.Cos(f1);
+            var x = Math.Cos(angular) - Math.Sin(f1) * sinf2;
+            var l2 = l1 + Math.Atan2(y, x);
+
+            var lat = f2 * DegreesCoeff;
+            var lon = l2 * DegreesCoeff;
 
             return new Location
             {
-                Latitude = Math.Round(lat3 / constant, 6),
-                Longitude = Math.Round(lon3 / constant, 6)
+                Latitude = Math.Round(Wrap90(lat), 6),
+                Longitude = Math.Round(Wrap180(lon), 6)
             };
+        }
+
+        private static double Wrap360(double degrees)
+        {
+            // Avoid rounding due to arithmetic ops if within range
+            if (0 <= degrees && degrees < 360)
+            {
+                return degrees;
+            }
+
+            // Sawtooth wave p:360, a:360
+            return (degrees % 360 + 360) % 360;
+        }
+
+        private static double Wrap180(double degrees)
+        {
+            // Avoid rounding due to arithmetic ops if within range
+            if (-180 < degrees && degrees <= 180)
+            {
+                return degrees;
+            }
+
+            // Sawtooth wave p:180, a:±180
+            return (degrees + 540) % 360 - 180;
+        }
+
+        private static double Wrap90(double degrees)
+        {
+            // Avoid rounding due to arithmetic ops if within range
+            if (-90 <= degrees && degrees <= 90)
+            {
+                return degrees;
+            }
+
+            // Triangle wave p:360 a:±90 TODO: fix e.g. -315°
+            return Math.Abs((degrees % 360 + 270) % 360 - 180) - 90;
         }
     }
 }
