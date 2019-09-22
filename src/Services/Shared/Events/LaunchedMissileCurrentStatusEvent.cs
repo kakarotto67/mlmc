@@ -12,6 +12,7 @@ namespace Mlmc.Shared.Events
         public Location MissileGpsLocation { get; set; }
         public DateTime InformationPostedDate { get; set; }
         public bool IsFinished { get; set; }
+        public double Bearing { get; set; }
 
         public void SetFinalInfo(Location targetLocation)
         {

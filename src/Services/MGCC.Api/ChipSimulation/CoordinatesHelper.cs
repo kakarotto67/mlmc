@@ -12,14 +12,13 @@ namespace Mlmc.MGCC.Api.ChipSimulation
         /// <summary>
         /// Get distance in km between two GPS points.
         /// </summary>
-        internal static double GetDistance(Location start, Location end)
+        internal static double GetDistance(Location from, Location to)
         {
-            // TODO: Test this implementation
-            var differenceLatitudeRadian = (end.Latitude - start.Latitude) * RadianCoeff;
-            var differenceLongitudeRadian = (end.Longitude - start.Longitude) * RadianCoeff;
+            var differenceLatitudeRadian = (to.Latitude - from.Latitude) * RadianCoeff;
+            var differenceLongitudeRadian = (to.Longitude - from.Longitude) * RadianCoeff;
 
-            var startLatitudeRadian = start.Latitude * RadianCoeff;
-            var endLatitudeRadian = end.Latitude * RadianCoeff;
+            var startLatitudeRadian = from.Latitude * RadianCoeff;
+            var endLatitudeRadian = to.Latitude * RadianCoeff;
 
             var a = Math.Sin(differenceLatitudeRadian / 2) * Math.Sin(differenceLatitudeRadian / 2) +
                     Math.Sin(differenceLongitudeRadian / 2) * Math.Sin(differenceLongitudeRadian / 2) *
@@ -31,61 +30,35 @@ namespace Mlmc.MGCC.Api.ChipSimulation
         }
 
         /// <summary>
-        /// Get GPS point on a way from start to end with set distance from start.
+        /// Get GPS point on a way from A to B based on A coordinates, bearing and distance.
         /// </summary>
-        internal static Location GetIntermediateLocation(Location start, Location end, double distanceFromStart)
-        {
-            // TODO: Test this implementation
-            var angular = distanceFromStart / EarthRadiusKm;
-
-            var a = Math.Sin(0 * angular) / Math.Sin(angular);
-            var b = Math.Sin(1 * angular) / Math.Sin(angular);
-
-            var startLatitudeRadian = start.Latitude * RadianCoeff;
-            var startLongitudeRadian = start.Longitude * RadianCoeff;
-            var endLatitudeRadian = end.Latitude * RadianCoeff;
-            var endLongitudeRadian = end.Longitude * RadianCoeff;
-
-            var x = a * Math.Cos(startLatitudeRadian) * Math.Cos(startLongitudeRadian) +
-                       b * Math.Cos(endLatitudeRadian) * Math.Cos(endLongitudeRadian);
-            var y = a * Math.Cos(startLatitudeRadian) * Math.Sin(startLongitudeRadian) +
-                       b * Math.Cos(endLatitudeRadian) * Math.Sin(endLongitudeRadian);
-            var z = a * Math.Sin(startLatitudeRadian) + b * Math.Sin(endLatitudeRadian);
-
-            var intermediateLatitude = Math.Atan2(z, Math.Sqrt(x * x + y * y));
-            var intermediateLongitude = Math.Atan2(y, x);
-
-            return new Location
-            {
-                Latitude = Math.Round(intermediateLatitude / RadianCoeff, 6),
-                Longitude = Math.Round(intermediateLongitude / RadianCoeff, 6)
-            };
-        }
-
-        internal static Location GetIntermediateLocation(double lat1, double lon1,
-                                       double lat2, double lon2, double dist)
+        internal static Location GetIntermediateLocation(Location from, double bearing, double distance)
         {
             // https://www.movable-type.co.uk/scripts/latlong.html
 
-            // φ is latitude, λ is longitude
+            if (from == null)
+            {
+                return null;
+            }
 
-            // I. Bearing to Find Bearing
-            var bearing = FindInitialBearing(lat1, lon1, lat2, lon2);
-
-            // II. Then 'Destination point given distance and bearing from start point'
-            // to find the point
-
-            return FindDestinationForGivenStartPointAndBearing(lat1, lon1, bearing, dist);
+            // Find intermediate location based on to, bearing and distance
+            return FindDestinationForGivenStartPointAndBearing(from, bearing, distance);
         }
 
-        private static double FindInitialBearing(double lat1, double lon1, double lat2, double lon2)
+        public static double FindInitialBearing(Location from, Location to)
         {
-            var f1 = lat1 * RadianCoeff;
-            var f2 = lat2 * RadianCoeff;
-            var lonDelta = (lon2 - lon1) * RadianCoeff;
+            if (from == null || to == null)
+            {
+                return 0;
+            }
 
-            var x = Math.Cos(f1) * Math.Sin(f2) - Math.Sin(f1) * Math.Cos(f2) * Math.Cos(lonDelta);
-            var y = Math.Sin(lonDelta) * Math.Cos(f2);
+            var fromLatRadian = from.Latitude * RadianCoeff;
+            var toLatRadian = to.Latitude * RadianCoeff;
+            var longitudeDeltaRadian = (to.Longitude - from.Longitude) * RadianCoeff;
+
+            var x = Math.Cos(fromLatRadian) * Math.Sin(toLatRadian)
+                - Math.Sin(fromLatRadian) * Math.Cos(toLatRadian) * Math.Cos(longitudeDeltaRadian);
+            var y = Math.Sin(longitudeDeltaRadian) * Math.Cos(toLatRadian);
             var t = Math.Atan2(y, x);
 
             var bearing = t * DegreesCoeff;
@@ -93,30 +66,36 @@ namespace Mlmc.MGCC.Api.ChipSimulation
             return Wrap360(bearing);
         }
 
-        private static Location FindDestinationForGivenStartPointAndBearing(double lat1, double lon1,
+        private static Location FindDestinationForGivenStartPointAndBearing(Location from,
             double bearing, double distance)
         {
-            var radius = 6371;// e3;
+            if (from == null)
+            {
+                return null;
+            }
 
-            var angular = distance / radius; // angular distance in radians
-            var t = bearing * RadianCoeff;
+            // Angular distance in radians
+            var angular = distance / EarthRadiusKm;
+            var bearingRadian = bearing * RadianCoeff;
 
-            var f1 = lat1 * RadianCoeff;
-            var l1 = lon1 * RadianCoeff;
+            var latitudeRadian = from.Latitude * RadianCoeff;
+            var longitudeRadian = from.Longitude * RadianCoeff;
 
-            var sinf2 = Math.Sin(f1) * Math.Cos(angular) + Math.Cos(f1) * Math.Sin(angular) * Math.Cos(t);
-            var f2 = Math.Asin(sinf2);
-            var y = Math.Sin(t) * Math.Sin(angular) * Math.Cos(f1);
-            var x = Math.Cos(angular) - Math.Sin(f1) * sinf2;
-            var l2 = l1 + Math.Atan2(y, x);
+            var destLatSine = Math.Sin(latitudeRadian) * Math.Cos(angular)
+                + Math.Cos(latitudeRadian) * Math.Sin(angular) * Math.Cos(bearingRadian);
+            var destLatitudeRadian = Math.Asin(destLatSine);
 
-            var lat = f2 * DegreesCoeff;
-            var lon = l2 * DegreesCoeff;
+            var y = Math.Sin(bearingRadian) * Math.Sin(angular) * Math.Cos(latitudeRadian);
+            var x = Math.Cos(angular) - Math.Sin(latitudeRadian) * destLatSine;
+            var destLongitudeRadian = longitudeRadian + Math.Atan2(y, x);
+
+            var destLatitude = destLatitudeRadian * DegreesCoeff;
+            var destLongitude = destLongitudeRadian * DegreesCoeff;
 
             return new Location
             {
-                Latitude = Math.Round(Wrap90(lat), 6),
-                Longitude = Math.Round(Wrap180(lon), 6)
+                Latitude = Math.Round(Wrap90(destLatitude), 6),
+                Longitude = Math.Round(Wrap180(destLongitude), 6)
             };
         }
 

@@ -46,6 +46,9 @@ namespace Mlmc.MGCC.Api.ChipSimulation
             var deploymentPlatformLocation = eventMessage.DeploymentPlatformLocation;
             var targetLocation = eventMessage.TargetLocation;
 
+            // Find bearing between deployment platform and target locations
+            var bearing = CoordinatesHelper.FindInitialBearing(deploymentPlatformLocation, targetLocation);
+
             var launchedMissileCurrentStatusEvent = new LaunchedMissileCurrentStatusEvent
             {
                 MissileId = eventMessage.MissileId,
@@ -53,7 +56,8 @@ namespace Mlmc.MGCC.Api.ChipSimulation
                 MissileName = eventMessage.MissileName,
                 MissileStatus = MissileStatus.Launched,
                 MissileGpsLocation = deploymentPlatformLocation,
-                InformationPostedDate = DateTime.UtcNow
+                InformationPostedDate = DateTime.UtcNow,
+                Bearing = bearing
             };
 
             // Post initial infromation about launched missile
@@ -82,16 +86,9 @@ namespace Mlmc.MGCC.Api.ChipSimulation
                 }
 
                 // Get current missile GPS coordinates
-                //var currentMissileGpsLocation =
-                //    CoordinatesHelper.GetIntermediateLocation(
-                //        deploymentPlatformLocation, targetLocation, currentDistance);
-
                 var currentMissileGpsLocation =
                    CoordinatesHelper.GetIntermediateLocation(
-                       deploymentPlatformLocation.Latitude,
-                       deploymentPlatformLocation.Longitude,
-                       targetLocation.Latitude,
-                       targetLocation.Longitude, currentDistance);
+                       deploymentPlatformLocation, bearing, currentDistance);
 
                 // Post current status information about launched missile
                 launchedMissileCurrentStatusEvent.SetIntermediaryInfo(currentMissileGpsLocation);

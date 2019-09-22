@@ -95,14 +95,14 @@
                 ignorePlacement: true,
                 allowOverlap: true,
                 image: missileIcon,
-                size: 0.2 //,
-                //rotation: ["get", "rotation"]
-              },
-              textOptions: {
-                textField: ["to-string", ["get", "name"]],
-                color: "#FFFFFF",
-                offset: [2, 0]
+                size: 0.2,
+                rotation: ["get", "rotation"]
               }
+              // textOptions: {
+              //   textField: ["to-string", ["get", "name"]],
+              //   color: "#FFFFFF",
+              //   offset: [2, 0]
+              // }
             })
           );
 
@@ -162,7 +162,6 @@
       let missiles = [];
 
       function renderActiveMissiles(missile) {
-        // TODO: Implement
         console.log(missile);
 
         var newMissile = new atlas.Shape(
@@ -174,8 +173,7 @@
         );
 
         newMissile.addProperty("name", missile.missileName);
-        // TODO: Calculate degrees
-        //newMissile.addProperty("rotation", 300);
+        newMissile.addProperty("rotation", missile.bearing);
 
         missiles[missile.missileId] = newMissile;
 
