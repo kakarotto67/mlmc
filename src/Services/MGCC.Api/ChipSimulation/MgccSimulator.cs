@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mlmc.MGCC.Api.ChipSimulation
@@ -47,6 +48,7 @@ namespace Mlmc.MGCC.Api.ChipSimulation
 
             var launchedMissileCurrentStatusEvent = new LaunchedMissileCurrentStatusEvent
             {
+                MissileId = eventMessage.MissileId,
                 MissileServiceIdentityNumber = eventMessage.MissileServiceIdentityNumber,
                 MissileName = eventMessage.MissileName,
                 MissileStatus = MissileStatus.Launched,
@@ -73,16 +75,23 @@ namespace Mlmc.MGCC.Api.ChipSimulation
             {
                 currentDistance += stepInKm;
 
-                // Dobule check if current distance is less than total distance
+                // Double check if current distance is less than total distance
                 if (currentDistance >= distance)
                 {
                     break;
                 }
 
                 // Get current missile GPS coordinates
+                //var currentMissileGpsLocation =
+                //    CoordinatesHelper.GetIntermediateLocation(
+                //        deploymentPlatformLocation, targetLocation, currentDistance);
+
                 var currentMissileGpsLocation =
-                    CoordinatesHelper.GetIntermediateLocation(
-                        deploymentPlatformLocation, targetLocation, currentDistance);
+                   CoordinatesHelper.GetIntermediateLocation(
+                       deploymentPlatformLocation.Latitude,
+                       deploymentPlatformLocation.Longitude,
+                       targetLocation.Latitude,
+                       targetLocation.Longitude, 0.1);
 
                 // Post current status information about launched missile
                 launchedMissileCurrentStatusEvent.SetIntermediaryInfo(currentMissileGpsLocation);
@@ -101,9 +110,10 @@ namespace Mlmc.MGCC.Api.ChipSimulation
                 return;
             }
 
+            // TODO: Extract delay simulation from this method
             // TODO: Add random delay
             // 1 second delay
-            Task.Delay(1000);
+            Thread.Sleep(1000);
 
             // Post SignalR message with current status and GPS coordinates
             // of launched missile so it can be handled on UI map.
@@ -125,18 +135,19 @@ namespace Mlmc.MGCC.Api.ChipSimulation
 
             using (var client = clientFactory.CreateClient())
             {
-                // TODO: Move to settings
                 var uri = configuration.GetValue<String>("ApiPath:Mgcc");
 
                 var eventJson = JsonConvert.SerializeObject(eventMessage);
 
                 var contentToPost = new StringContent(eventJson, Encoding.UTF8, "application/json");
 
-                // TODO: Check the response
                 var postResult = client.PostAsync(uri, contentToPost).Result;
             }
         }
 
+        /// <summary>
+        /// Message produced by this method will be used by Reporting service.
+        /// </summary>
         private void PostMissileFinishedEvent(LaunchedMissileCurrentStatusEvent eventMessage)
         {
             if (eventMessage == null || !eventMessage.IsFinished)
@@ -150,6 +161,7 @@ namespace Mlmc.MGCC.Api.ChipSimulation
             // TODO: Add more info
             var missileFinishedEvent = new MissileFinishedEvent
             {
+                MissileId = eventMessage.MissileId,
                 MissileServiceIdentityNumber = eventMessage.MissileServiceIdentityNumber,
                 MissileName = eventMessage.MissileName,
                 MissileStatus = eventMessage.MissileStatus,

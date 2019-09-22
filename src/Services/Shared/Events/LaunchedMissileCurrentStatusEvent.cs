@@ -5,12 +5,13 @@ namespace Mlmc.Shared.Events
 {
     public sealed class LaunchedMissileCurrentStatusEvent : BaseEvent
     {
+        public long MissileId { get; set; }
         public Guid MissileServiceIdentityNumber { get; set; }
         public string MissileName { get; set; }
         public MissileStatus MissileStatus { get; set; }
         public Location MissileGpsLocation { get; set; }
         public DateTime InformationPostedDate { get; set; }
-        public bool IsFinished { get; private set; }
+        public bool IsFinished { get; set; }
 
         public void SetFinalInfo(Location targetLocation)
         {

@@ -6,8 +6,9 @@ namespace Mlmc.MGCC.Api.RealTime
 {
     public sealed class MissileStatusHub : Hub
     {
+        private const string HubsRoot = "/hubs";
+        public static readonly string MissileStatusHubUri = $"{HubsRoot}/missileStatusHub";
         public const string MissileStatusUpdatedMessage = "MissileStatusUpdated";
-        public const string MissileStatusHubUri = "/missileStatusHub";
 
         public async Task SendMissileStatusUpdatedMessage(
             LaunchedMissileCurrentStatusEvent missileStatusEvent)

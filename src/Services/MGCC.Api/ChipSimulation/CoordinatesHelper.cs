@@ -56,8 +56,33 @@ namespace Mlmc.MGCC.Api.ChipSimulation
 
             return new Location
             {
-                Latitude = intermediateLatitude / RadianCoeff,
-                Longitude = intermediateLongitude / RadianCoeff
+                Latitude = Math.Round(intermediateLatitude / RadianCoeff, 6),
+                Longitude = Math.Round(intermediateLongitude / RadianCoeff, 6)
+            };
+        }
+
+        internal static Location GetIntermediateLocation(double lat1, double lon1,
+                                       double lat2, double lon2, double dist)
+        {
+            double constant = Math.PI / 180;
+            double angular = dist / 6371;
+
+            double a = Math.Sin(0 * angular) / Math.Sin(angular);
+            double b = Math.Sin(1 * angular) / Math.Sin(angular);
+
+            double x = a * Math.Cos(lat1 * constant) * Math.Cos(lon1 * constant) +
+                       b * Math.Cos(lat2 * constant) * Math.Cos(lon2 * constant);
+            double y = a * Math.Cos(lat1 * constant) * Math.Sin(lon1 * constant) +
+                       b * Math.Cos(lat2 * constant) * Math.Sin(lon2 * constant);
+            double z = a * Math.Sin(lat1 * constant) + b * Math.Sin(lat2 * constant);
+
+            double lat3 = Math.Atan2(z, Math.Sqrt(x * x + y * y));
+            double lon3 = Math.Atan2(y, x);
+
+            return new Location
+            {
+                Latitude = Math.Round(lat3 / constant, 6),
+                Longitude = Math.Round(lon3 / constant, 6)
             };
         }
     }

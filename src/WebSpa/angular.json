@@ -29,7 +29,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/@aspnet/signalr/dist/browser/signalr.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -86,7 +88,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/@aspnet/signalr/dist/browser/signalr.min.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

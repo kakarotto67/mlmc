@@ -56,6 +56,7 @@ namespace Mlmc.Operation.Controllers
 
             var eventMessage = new LaunchMissileEvent
             {
+                MissileId = missileFromDatabase.MissileId,
                 MissileServiceIdentityNumber = missile.ServiceIdentityNumber,
                 MissileName = missileFromDatabase.Name,
                 LaunchDate = DateTime.UtcNow,

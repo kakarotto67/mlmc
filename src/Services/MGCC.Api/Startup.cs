@@ -44,6 +44,16 @@ namespace Mlmc.MGCC.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            // Configure cross - origin requests (CORS) so consumers can access this API
+            services.AddCors(options => options.AddPolicy("Mlmc.Mgcc.Api",
+            builder =>
+            {
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .SetIsOriginAllowed((host) => true)
+                       .AllowCredentials();
+            }));
+
             // Add SignalR
             services.AddSignalR();
         }
@@ -62,13 +72,16 @@ namespace Mlmc.MGCC.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseCors("Mlmc.Mgcc.Api");
 
             // Use SignalR
             app.UseSignalR(routes =>
             {
                 routes.MapHub<MissileStatusHub>(MissileStatusHub.MissileStatusHubUri);
             });
+
+            app.UseMvc();
         }
     }
 }
