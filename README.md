@@ -5,6 +5,11 @@ A microservices-based app that shows list of missiles with possibilities to laun
 Current state: In Active Development.
 
 ## Documentation
+Summary
+- [Architectural diagram](https://github.com/kakarotto67/mlmc/blob/master/README.md#architectural-diagram)
+- [Make it run](https://github.com/kakarotto67/mlmc/blob/master/README.md#make-it-run)
+- [Architectural decisions log](https://github.com/kakarotto67/mlmc/blob/master/README.md#architectural-decisions-log)
+- [Other](https://github.com/kakarotto67/mlmc/blob/master/README.md#other)
 
 ### Architectural diagram
 [ Will be updated soon ]
