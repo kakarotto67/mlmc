@@ -47,6 +47,8 @@ You might need to update these config files and set correct URIs to respective s
 - `{root}\src\Services\MGCC.Api`
   - appsettings.json - `ApiPath:Mgcc` and `WebSpaUri` settings
   - appsettings.Development.json - `AiPath:Mgcc` and `WebSpaUri` settings
+- `{root}\src\WebSpa\src\assets\js`
+  - config.js - `context.mgccUri` setting
 
 ### Architectural decisions log
 - For architectural decisions see list of applied [ADR records](https://github.com/kakarotto67/mlmc/blob/master/docs/adr/index.md).
