@@ -30,6 +30,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "src/assets/js/config.js",
               "node_modules/@aspnet/signalr/dist/browser/signalr.min.js"
             ],
             "es5BrowserSupport": true
@@ -89,6 +90,7 @@
               "src/styles.scss"
             ],
             "scripts": [
+              "src/assets/js/config.js",
               "node_modules/@aspnet/signalr/dist/browser/signalr.min.js"
             ],
             "assets": [

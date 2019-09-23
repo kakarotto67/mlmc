@@ -97,12 +97,13 @@
                 image: missileIcon,
                 size: 0.2,
                 rotation: ["get", "rotation"]
+              },
+              textOptions: {
+                textField: ["to-string", ["get", "name"]],
+                color: "#333333",
+                size: 12,
+                offset: [3, 0]
               }
-              // textOptions: {
-              //   textField: ["to-string", ["get", "name"]],
-              //   color: "#FFFFFF",
-              //   offset: [2, 0]
-              // }
             })
           );
 
@@ -119,27 +120,29 @@
           // );
 
           // Setup SignalR connection
-          // TODO: Move to settings
-          let baseUrl = "https://localhost:44316";
-          let missileStatusHubUrl = `${baseUrl}/hubs/missileStatusHub`;
+          setupSignalR();
+        });
+      }
 
-          const connection = new signalR.HubConnectionBuilder()
-            .withUrl(missileStatusHubUrl)
-            .build();
+      // Setup SignalR connection
+      function setupSignalR() {
+        // config is defined in assets/js/config.js and included in angular.json scripts sections
+        let missileStatusHubUrl = `${config.mgccUri}/hubs/missileStatusHub`;
 
-          // Start SignalR connection
-          startSignalRConnection(connection);
+        const connection = new signalR.HubConnectionBuilder().withUrl(missileStatusHubUrl).build();
 
-          // Setup SignalR handler
-          connection.on("MissileStatusUpdated", renderActiveMissiles);
+        // Start SignalR connection
+        startSignalRConnection(connection);
 
-          // Try to reconnect on close
-          connection.onclose(function() {
-            console.log("Disconnected from SignalR!");
-            setTimeout(function() {
-              startSignalRConnection(connection);
-            }, 5000);
-          });
+        // Setup SignalR handler
+        connection.on("MissileStatusUpdated", renderActiveMissiles);
+
+        // Try to reconnect on close
+        connection.onclose(function() {
+          console.log("Disconnected from SignalR!");
+          setTimeout(function() {
+            startSignalRConnection(connection);
+          }, 5000);
         });
       }
 
@@ -162,7 +165,7 @@
       let missiles = [];
 
       function renderActiveMissiles(missile) {
-        console.log(missile);
+        //console.log(missile);
 
         var newMissile = new atlas.Shape(
           new atlas.data.Point([
