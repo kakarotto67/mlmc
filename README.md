@@ -28,19 +28,21 @@ Summary
 #### Steps
 [ Will be simplified soon ]
 
-1. Run MongoDb and RabbitMQ under `{root}` dir using following command:
+1. Start Docker for Desktop in Linux Containers mode
+
+2. Run MongoDb and RabbitMQ under `{root}` dir using following command:
 
 `docker-compose -f "docker-compose.yml" up --build`
 
-2. Run WebSPA Angular client under `{root}\src\WebSpa` dir using following command:
+3. Run WebSPA Angular client under `{root}\src\WebSpa` dir using following command:
 
 `ng serve`
 
-3. Run Operation service under `{root}\src\Services\Operation` dir using following command:
+4. Run Operation service under `{root}\src\Services\Operation` dir using following command:
 
 `dotnet run`
 
-4. Run MGCC.API service under `{root}\src\Services\MGCC.Api` dir using following command:
+5. Run MGCC.API service under `{root}\src\Services\MGCC.Api` dir using following command:
 
 `dotnet run`
 
