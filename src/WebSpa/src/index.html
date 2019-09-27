@@ -53,7 +53,9 @@
       href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
       type="text/css"
     />
-    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+    <!-- <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script> -->
+    <!-- TODO: Temporarily use manual fix to atlas js datasource.remove() -> _removeFromSources() method since it has bug on production -->
+    <script src="assets/js/atlas.min.v2custom.js"></script>
     <!-- Add a reference to the Azure Maps Services Module JavaScript file. -->
     <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas-service.min.js"></script>
 
@@ -79,18 +81,18 @@
           // Setup required images
           // Missile icon
           let missileIcon = "missile-icon";
-          map.imageSprite.add(missileIcon, "https://i.imgur.com/zHsJdF3.png");
+          map.imageSprite.add(missileIcon, config.missileIcon);
           // Boom icon
           let boomIcon = "boom-icon";
-          map.imageSprite.add(boomIcon, "https://i.imgur.com/JldWSuB.png");
+          map.imageSprite.add(boomIcon, config.boomIcon);
 
-          // Create a data source and add it to the map
-          datasource = new atlas.source.DataSource();
-          map.sources.add(datasource);
+          // Initialize data source for launched missiles and add it to the map
+          launchedMissilesDatasource = new atlas.source.DataSource();
+          map.sources.add(launchedMissilesDatasource);
 
           // Create symbol layer for missile icon and add it to the map
           map.layers.add(
-            new atlas.layer.SymbolLayer(datasource, null, {
+            new atlas.layer.SymbolLayer(launchedMissilesDatasource, null, {
               iconOptions: {
                 ignorePlacement: true,
                 allowOverlap: true,
@@ -107,17 +109,21 @@
             })
           );
 
+          // Initialize data source for finished missiles and add it to the map
+          finishedMissilesDatasource = new atlas.source.DataSource();
+          map.sources.add(finishedMissilesDatasource);
+
           // Create symbol layer for boom icon and add it to the map
-          // map.layers.add(
-          //   new atlas.layer.SymbolLayer(datasource, null, {
-          //     iconOptions: {
-          //       ignorePlacement: true,
-          //       allowOverlap: true,
-          //       image: boomIcon,
-          //       size: 0.02
-          //     }
-          //   })
-          // );
+          map.layers.add(
+            new atlas.layer.SymbolLayer(finishedMissilesDatasource, null, {
+              iconOptions: {
+                ignorePlacement: true,
+                allowOverlap: true,
+                image: boomIcon,
+                size: 0.08
+              }
+            })
+          );
 
           // Setup SignalR connection
           setupSignalR();
@@ -161,13 +167,31 @@
           });
       }
 
-      let datasource;
-      let missiles = [];
+      let launchedMissilesDatasource;
+      let finishedMissilesDatasource;
+      let launchedMissiles = [];
+      let finishedMissiles = [];
 
       function renderActiveMissiles(missile) {
-        //console.log(missile);
+        if (!missile) {
+          return;
+        }
 
-        var newMissile = new atlas.Shape(
+        if (missile.isFinished) {
+          clearLaunchedMissile(missile);
+          renderFinishedMissile(missile);
+          clearFinishedMissile(missile);
+        } else {
+          renderLaunchedMissile(missile);
+        }
+      }
+
+      function renderLaunchedMissile(missile) {
+        if (!missile || missile.isFinished) {
+          return;
+        }
+
+        var launchedMissileShape = new atlas.Shape(
           new atlas.data.Point([
             missile.missileGpsLocation.longitude,
             missile.missileGpsLocation.latitude
@@ -175,12 +199,48 @@
           missile.missileId
         );
 
-        newMissile.addProperty("name", missile.missileName);
-        newMissile.addProperty("rotation", missile.bearing);
+        launchedMissileShape.addProperty("name", missile.missileName);
+        launchedMissileShape.addProperty("rotation", missile.bearing);
 
-        missiles[missile.missileId] = newMissile;
+        launchedMissiles[missile.missileId] = launchedMissileShape;
+        launchedMissilesDatasource.setShapes(Object.values(launchedMissiles));
+      }
 
-        datasource.setShapes(Object.values(missiles));
+      function renderFinishedMissile(missile) {
+        if (!missile || !missile.isFinished) {
+          return;
+        }
+
+        var finishedMissileShape = new atlas.Shape(
+          new atlas.data.Point([
+            missile.missileGpsLocation.longitude,
+            missile.missileGpsLocation.latitude
+          ]),
+          missile.missileId
+        );
+
+        finishedMissiles[missile.missileId] = finishedMissileShape;
+        finishedMissilesDatasource.setShapes(Object.values(finishedMissiles));
+      }
+
+      function clearLaunchedMissile(missile) {
+        if (!missile || !missile.isFinished) {
+          return;
+        }
+
+        var launchedMissileShape = launchedMissiles[missile.missileId];
+        launchedMissilesDatasource.remove(launchedMissileShape.getId().toString());
+      }
+
+      function clearFinishedMissile(missile) {
+        if (!missile || !missile.isFinished) {
+          return;
+        }
+
+        setTimeout(function() {
+          var finishedMissileShape = finishedMissiles[missile.missileId];
+          finishedMissilesDatasource.remove(finishedMissileShape.getId().toString());
+        }, 5000);
       }
     </script>
   </head>

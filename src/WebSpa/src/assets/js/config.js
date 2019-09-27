@@ -7,4 +7,6 @@ var config = config || {};
   //   config.myKey
   //
   context.mgccUri = "https://localhost:44316";
+  context.missileIcon = "https://i.imgur.com/zHsJdF3.png";
+  context.boomIcon = "https://i.imgur.com/JldWSuB.png";
 })(config);
