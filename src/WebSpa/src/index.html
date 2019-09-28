@@ -178,9 +178,7 @@
         }
 
         if (missile.isFinished) {
-          clearLaunchedMissile(missile);
           renderFinishedMissile(missile);
-          clearFinishedMissile(missile);
         } else {
           renderLaunchedMissile(missile);
         }
@@ -203,13 +201,20 @@
         launchedMissileShape.addProperty("rotation", missile.bearing);
 
         launchedMissiles[missile.missileId] = launchedMissileShape;
-        launchedMissilesDatasource.setShapes(Object.values(launchedMissiles));
+
+        var nonEmptyLaunchedMissiles = Object.values(launchedMissiles).filter(function(el) {
+          return el != null;
+        });
+
+        launchedMissilesDatasource.setShapes(nonEmptyLaunchedMissiles);
       }
 
       function renderFinishedMissile(missile) {
         if (!missile || !missile.isFinished) {
           return;
         }
+
+        clearLaunchedMissile(missile);
 
         var finishedMissileShape = new atlas.Shape(
           new atlas.data.Point([
@@ -220,7 +225,14 @@
         );
 
         finishedMissiles[missile.missileId] = finishedMissileShape;
-        finishedMissilesDatasource.setShapes(Object.values(finishedMissiles));
+
+        var nonEmptyFinishedMissiles = Object.values(finishedMissiles).filter(function(el) {
+          return el != null;
+        });
+
+        finishedMissilesDatasource.setShapes(nonEmptyFinishedMissiles);
+
+        clearFinishedMissile(missile);
       }
 
       function clearLaunchedMissile(missile) {
@@ -229,6 +241,8 @@
         }
 
         var launchedMissileShape = launchedMissiles[missile.missileId];
+
+        launchedMissiles[missile.missileId] = null;
         launchedMissilesDatasource.remove(launchedMissileShape.getId().toString());
       }
 
@@ -239,6 +253,8 @@
 
         setTimeout(function() {
           var finishedMissileShape = finishedMissiles[missile.missileId];
+
+          finishedMissiles[missile.missileId] = null;
           finishedMissilesDatasource.remove(finishedMissileShape.getId().toString());
         }, 5000);
       }
