@@ -31,8 +31,7 @@ export class OperationRepository {
     var body = {
       deploymentPlatformId: missile.deploymentPlatformId,
       name: missile.name,
-      // For some reason missile.type might come as string ignoring the fact that it is specified to be a number
-      type: parseInt(missile.type.toString())
+      type: missile.type
     };
     var headers = new HttpHeaders({ "Content-Type": "application/json" });
 

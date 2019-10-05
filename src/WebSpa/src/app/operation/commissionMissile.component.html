@@ -57,12 +57,12 @@
       <p class="form-input-label">Missile Type</p>
       <select name="missileType" [(ngModel)]="newMissile.type">
         <option value="" disabled selected>Select Missile Type</option>
-        <option value="0">Air-to-Air</option>
-        <option value="1">Air-to-Surface</option>
-        <option value="2">Surface-to-Surface</option>
-        <option value="3">Surface-to-Air</option>
-        <option value="4">Intercontinental Ballistic</option>
-        <option value="5">Submarine Launched</option>
+        <option [ngValue]="0">Air-to-Air</option>
+        <option [ngValue]="1">Air-to-Surface</option>
+        <option [ngValue]="2">Surface-to-Surface</option>
+        <option [ngValue]="3">Surface-to-Air</option>
+        <option [ngValue]="4">Intercontinental Ballistic</option>
+        <option [ngValue]="5">Submarine Launched</option>
       </select>
     </div>
   </div>
