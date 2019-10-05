@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
 using Mlmc.Operation.MongoDb;
 using RabbitMQ.Client;
@@ -43,7 +44,8 @@ namespace Mlmc.Operation
             // Setup Message Bus
             services.AddScoped<MessageBus>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             // Configure cross-origin requests (CORS) so consumers can access this API
             services.AddCors(x => x.AddPolicy("Mlmc.Operation.Missiles",
@@ -57,7 +59,7 @@ namespace Mlmc.Operation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

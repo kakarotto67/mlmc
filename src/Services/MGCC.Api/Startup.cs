@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,8 @@ namespace Mlmc.MGCC.Api
 
             services.AddHttpClient();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             // Configure cross - origin requests (CORS) so consumers can access this API
             services.AddCors(options => options.AddPolicy("Mlmc.Mgcc.Api",
@@ -59,7 +61,7 @@ namespace Mlmc.MGCC.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -75,10 +77,12 @@ namespace Mlmc.MGCC.Api
 
             app.UseCors("Mlmc.Mgcc.Api");
 
+            app.UseRouting();
+
             // Use SignalR
-            app.UseSignalR(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapHub<MissileStatusHub>(MissileStatusHub.MissileStatusHubUri);
+                endpoints.MapHub<MissileStatusHub>(MissileStatusHub.MissileStatusHubUri);
             });
 
             app.UseMvc();
