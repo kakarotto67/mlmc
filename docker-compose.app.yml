@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  operation-service:
+    image: "operation-service"
+    container_name: "mlmc-operation-service"
+    build:
+      context: .
+      dockerfile: src/Services/Operation/Dockerfile
+    ports:
+      - "44386:443"
+
+  mgcc-service:
+    image: "mgcc-service"
+    container_name: "mlmc-mgcc-service"
+    build:
+      context: .
+      dockerfile: src/Services/MGCC.Api/Dockerfile
+    ports:
+      - "44316:443"
+    depends_on:
+      - "operation-service"
+
+  webspa-client:
+    image: "webspa-client"
+    container_name: "mlmc-webspa-client"
+    build:
+      context: .
+      dockerfile: src/WebSpa/Dockerfile
+    ports:
+      - "4200:4200"
+    depends_on:
+      - "operation-service"
+      - "mgcc-service"
