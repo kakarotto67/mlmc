@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
 using Mlmc.Operation.MongoDb;
 using RabbitMQ.Client;
-using System;
+using Microsoft.OpenApi.Models;
 
 namespace Mlmc.Operation
 {
@@ -47,6 +48,17 @@ namespace Mlmc.Operation
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            // Configure Swagger
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v0", new OpenApiInfo
+                {
+                    Title = "MLMC Operation API",
+                    Version = "v0",
+                    Description = "Operation service API of MLMC app.",
+                });
+            });
+
             // Configure cross-origin requests (CORS) so consumers can access this API
             services.AddCors(x => x.AddPolicy("Mlmc.Operation.Missiles",
                builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
@@ -73,6 +85,13 @@ namespace Mlmc.Operation
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Use Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v0/swagger.json", "Operation API v0");
+            });
 
             // Initialize Database with default data
             SeedDatabase(app);

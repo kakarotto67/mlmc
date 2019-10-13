@@ -10,6 +10,7 @@ using Mlmc.MGCC.Api.ChipSimulation;
 using Mlmc.MGCC.Api.MessageBusConsumer;
 using Mlmc.MGCC.Api.RealTime;
 using RabbitMQ.Client;
+using Microsoft.OpenApi.Models;
 
 namespace Mlmc.MGCC.Api
 {
@@ -45,6 +46,17 @@ namespace Mlmc.MGCC.Api
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            // Configure Swagger
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v0", new OpenApiInfo
+                {
+                    Title = "MLMC MGCC API",
+                    Version = "v0",
+                    Description = "MGCC service API of MLMC app.",
+                });
+            });
 
             // Configure cross - origin requests (CORS) so consumers can access this API
             services.AddCors(options => options.AddPolicy("Mlmc.Mgcc.Api",
@@ -86,6 +98,13 @@ namespace Mlmc.MGCC.Api
             });
 
             app.UseMvc();
+
+            // Use Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v0/swagger.json", "MGCC API v0");
+            });
         }
     }
 }
