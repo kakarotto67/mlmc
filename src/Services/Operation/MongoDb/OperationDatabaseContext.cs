@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using System;
 
 namespace Mlmc.Operation.MongoDb
 {
@@ -6,7 +7,7 @@ namespace Mlmc.Operation.MongoDb
     {
         public OperationDatabaseContext(IOperationDatabaseSettings dbSettings)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
+            var client = new MongoClient(dbSettings.GetConnectionString());
             DatabaseInstance = client.GetDatabase(dbSettings.DatabaseName);
         }
 

@@ -1,11 +1,17 @@
-version: "3"
+version: "3.1"
 
 services:
+
   operation-database:
     image: "mongo"
     container_name: "mlmc-operation-database"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: qwerty
     ports:
       - "27018:27017"
+    networks:
+      - backend
 
   message-bus:
     image: "rabbitmq:3-management"
@@ -13,3 +19,54 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - backend
+
+  operation-service:
+    image: "operation-service"
+    container_name: "mlmc-operation-service"
+    build:
+      context: .
+      dockerfile: src/Services/Operation/Dockerfile
+    ports:
+      - "44386:80"
+    networks:
+      - backend
+    environment:
+      OperationDatabaseSettings__Host: host.docker.internal
+    depends_on:
+      - "operation-database"
+      - "message-bus"
+
+  mgcc-service:
+    image: "mgcc-service"
+    container_name: "mlmc-mgcc-service"
+    build:
+      context: .
+      dockerfile: src/Services/MGCC.Api/Dockerfile
+    ports:
+      - "44316:80"
+    networks:
+      - backend
+    environment:
+      MessageBusConfiguration__HostName: rabbitmq
+    depends_on:
+      - "operation-service"
+      - "message-bus"
+
+  webspa-client:
+    image: "webspa-client"
+    container_name: "mlmc-webspa-client"
+    build:
+      context: .
+      dockerfile: src/WebSpa/Dockerfile
+    ports:
+      - "4200:4200"
+    networks:
+      - backend
+    depends_on:
+      - "operation-service"
+      - "mgcc-service"
+
+networks:
+  backend:

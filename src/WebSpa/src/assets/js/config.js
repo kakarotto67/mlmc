@@ -6,7 +6,7 @@ var config = config || {};
   // Then access it in any html or javascript file like this:
   //   config.myKey
   //
-  context.mgccUri = "https://localhost:44316";
+  context.mgccUri = "http://localhost:44316";
   context.missileIcon = "https://i.imgur.com/zHsJdF3.png";
   context.boomIcon = "https://i.imgur.com/JldWSuB.png";
 })(config);
