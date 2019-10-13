@@ -25,7 +25,7 @@ Summary
 - [NodeJS and NPM](https://www.npmjs.com/get-npm)
 - [Angular CLI](https://angular.io/cli)
 
-#### Steps
+#### Steps [Obsolete]
 [ Will be simplified soon ]
 
 1. Start Docker for Desktop in Linux Containers mode
