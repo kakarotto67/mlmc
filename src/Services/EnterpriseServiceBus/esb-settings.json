@@ -1,2 +1,8 @@
 {
+  "MessageBusSettings": {
+    "Queues": {
+      "LaunchCenterQueue": "MissileLaunchCenterQueue",
+      "FinishedMissilesQueue": "FinishedMissilesQueue"
+    }
+  }
 }
