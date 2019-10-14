@@ -23,25 +23,18 @@ COPY ["src/Services/Shared", "/src/Services/Operation/"]
 
 # Additionally, copy ESB settings into image so related service will be able to find it
 COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/Services/EnterpriseServiceBus/"]
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/"]
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/Services/"]
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/Services/EnterpriseServiceBus/"]
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/EnterpriseServiceBus/"]
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/EnterpriseServiceBus/"]
 
 WORKDIR "/src/Services/Operation"
 RUN dotnet build "Operation.csproj" -c Release -o /app/build
 
 FROM build AS publish
 
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/Services/EnterpriseServiceBus/"]
 COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/EnterpriseServiceBus/"]
 
 RUN dotnet publish "Operation.csproj" -c Release -o /app/publish
 
 FROM base AS final
 
-#COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/src/Services/EnterpriseServiceBus/"]
 COPY ["src/Services/EnterpriseServiceBus/esb-settings.json", "/EnterpriseServiceBus/"]
 
 WORKDIR /app
