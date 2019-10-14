@@ -1,9 +1,2 @@
 {
-   "MessageBusConfiguration": {
-      "HostName": "localhost",
-      "Queues": {
-         "LaunchCenterQueue": "MissileLaunchCenterQueue",
-         "FinishedMissilesQueue": "FinishedMissilesQueue"
-      }
-   }
 }
