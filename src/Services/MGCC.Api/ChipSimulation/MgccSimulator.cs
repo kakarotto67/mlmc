@@ -154,7 +154,7 @@ namespace Mlmc.MGCC.Api.ChipSimulation
 
             // Publish missile finished message
             var finishedMissilesQueue = configuration
-                .GetValue<String>("MessageBusConfiguration:Queues:FinishedMissilesQueue");
+                .GetValue<String>("MessageBusSettings:Queues:FinishedMissilesQueue");
             // TODO: Add more info
             var missileFinishedEvent = new MissileFinishedEvent
             {

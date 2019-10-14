@@ -38,12 +38,16 @@ namespace Mlmc.Operation
             // Setup RabbitMQ client
             var connectionFactory = new ConnectionFactory
             {
-                HostName = Configuration.GetValue<String>("MessageBusConfiguration:HostName")
+                HostName = Configuration.GetValue<String>("MessageBusSettings:HostName"),
+                Port = Configuration.GetValue<Int32>("MessageBusSettings:Port"),
+                VirtualHost = Configuration.GetValue<String>("MessageBusSettings:VirtualHost"),
+                UserName = Configuration.GetValue<String>("MessageBusSettings:UserName"),
+                Password = Configuration.GetValue<String>("MessageBusSettings:Password")
             };
             services.AddSingleton<IConnectionFactory>(sp => connectionFactory);
 
             // Setup Message Bus
-            services.AddScoped<MessageBus>();
+            services.AddSingleton<MessageBus>();
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
@@ -83,7 +87,9 @@ namespace Mlmc.Operation
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // TODO: Setup HTTPS for containers later
+            //app.UseHttpsRedirection();
+
             app.UseMvc();
 
             // Use Swagger

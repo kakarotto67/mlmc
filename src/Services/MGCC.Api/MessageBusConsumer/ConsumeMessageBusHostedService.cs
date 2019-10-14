@@ -37,7 +37,7 @@ namespace Mlmc.MGCC.Api.MessageBusConsumer
         {
             mgccSimulator.SetStepInKm(100);
 
-            var queue = configuration.GetValue<String>("MessageBusConfiguration:Queues:LaunchCenterQueue");
+            var queue = configuration.GetValue<String>("MessageBusSettings:Queues:LaunchCenterQueue");
 
             // Handle incoming messages of type LaunchMissileEvent
             messageBus.ConsumeMessage<LaunchMissileEvent>(queue, (eventMessage) =>

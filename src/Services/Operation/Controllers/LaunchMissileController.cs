@@ -66,7 +66,7 @@ namespace Mlmc.Operation.Controllers
 
             // Publish launch missile message
             var launchMissileQueue = configuration
-                .GetValue<String>("MessageBusConfiguration:Queues:LaunchCenterQueue");
+                .GetValue<String>("MessageBusSettings:Queues:LaunchCenterQueue");
             messageBus.PublishMessage(launchMissileQueue, eventMessage);
 
             // Update status of the missile to 'Launched'

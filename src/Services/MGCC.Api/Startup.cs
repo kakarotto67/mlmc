@@ -29,7 +29,11 @@ namespace Mlmc.MGCC.Api
             // Setup RabbitMQ client
             var connectionFactory = new ConnectionFactory
             {
-                HostName = Configuration.GetValue<String>("MessageBusConfiguration:HostName")
+                HostName = Configuration.GetValue<String>("MessageBusSettings:HostName"),
+                Port = Configuration.GetValue<Int32>("MessageBusSettings:Port"),
+                VirtualHost = Configuration.GetValue<String>("MessageBusSettings:VirtualHost"),
+                UserName = Configuration.GetValue<String>("MessageBusSettings:UserName"),
+                Password = Configuration.GetValue<String>("MessageBusSettings:Password")
             };
             services.AddSingleton<IConnectionFactory>(sp => connectionFactory);
 
@@ -59,14 +63,14 @@ namespace Mlmc.MGCC.Api
             });
 
             // Configure cross - origin requests (CORS) so consumers can access this API
-            services.AddCors(options => options.AddPolicy("Mlmc.Mgcc.Api",
-            builder =>
-            {
-                builder.AllowAnyHeader()
-                       .AllowAnyMethod()
-                       .SetIsOriginAllowed((host) => true)
-                       .AllowCredentials();
-            }));
+            services.AddCors(x => x.AddPolicy("Mlmc.Mgcc.Api",
+                builder =>
+                {
+                    builder.AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .SetIsOriginAllowed((host) => true)
+                           .AllowCredentials();
+                }));
 
             // Add SignalR
             services.AddSignalR();
@@ -85,7 +89,8 @@ namespace Mlmc.MGCC.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // TODO: Setup HTTPS for containers later
+            //app.UseHttpsRedirection();
 
             app.UseCors("Mlmc.Mgcc.Api");
 

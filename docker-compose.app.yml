@@ -1,6 +1,7 @@
 version: "3.1"
 
 services:
+
   operation-service:
     image: "operation-service"
     container_name: "mlmc-operation-service"
@@ -8,7 +9,12 @@ services:
       context: .
       dockerfile: src/Services/Operation/Dockerfile
     ports:
-      - "44386:443"
+      - "44386:80"
+    networks:
+      - backend
+    environment:
+      OperationDatabaseSettings__Host: host.docker.internal
+      MessageBusSettings__HostName: message-bus
 
   mgcc-service:
     image: "mgcc-service"
@@ -17,9 +23,11 @@ services:
       context: .
       dockerfile: src/Services/MGCC.Api/Dockerfile
     ports:
-      - "44316:443"
-    depends_on:
-      - "operation-service"
+      - "44316:80"
+    networks:
+      - backend
+    environment:
+      MessageBusSettings__HostName: message-bus
 
   webspa-client:
     image: "webspa-client"
@@ -29,6 +37,11 @@ services:
       dockerfile: src/WebSpa/Dockerfile
     ports:
       - "4200:4200"
+    networks:
+      - backend
     depends_on:
       - "operation-service"
       - "mgcc-service"
+
+networks:
+  backend:
