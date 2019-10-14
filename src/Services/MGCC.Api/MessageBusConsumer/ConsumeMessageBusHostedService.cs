@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Mlmc.EnterpriseServiceBus.RabbitMq.MessageBus;
 using Mlmc.MGCC.Api.ChipSimulation;
 using Mlmc.Shared.Events;
@@ -14,13 +15,16 @@ namespace Mlmc.MGCC.Api.MessageBusConsumer
         private readonly MessageBus messageBus;
         private readonly MgccSimulator mgccSimulator;
         private readonly IConfiguration configuration;
+        private readonly ILogger<ConsumeMessageBusHostedService> logger;
 
         public ConsumeMessageBusHostedService(MessageBus messageBus,
-            MgccSimulator mgccSimulator, IConfiguration configuration)
+            MgccSimulator mgccSimulator, IConfiguration configuration,
+            ILogger<ConsumeMessageBusHostedService> logger)
         {
             this.messageBus = messageBus;
             this.mgccSimulator = mgccSimulator;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -42,6 +46,7 @@ namespace Mlmc.MGCC.Api.MessageBusConsumer
             // Handle incoming messages of type LaunchMissileEvent
             messageBus.ConsumeMessage<LaunchMissileEvent>(queue, (eventMessage) =>
             {
+                logger.LogInformation($"HandleMessageBusMessages: Message is handled successfully.");
                 mgccSimulator.RunNewSimulation(eventMessage);
             });
         }
