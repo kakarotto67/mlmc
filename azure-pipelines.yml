@@ -32,7 +32,7 @@ variables:
 
 stages:
 # Build Operation Service Image
-- stage: Build Operation Service
+- stage: BuildOperationService
   displayName: Build stage
   jobs:  
   - job: Build
@@ -54,7 +54,7 @@ stages:
     - upload: manifests
       artifact: manifests
 # Deploy Operation Service Image
-- stage: Deploy Operation Service
+- stage: DeployOperationService
   displayName: Deploy stage
   dependsOn: Build
   jobs:
@@ -88,7 +88,7 @@ stages:
 
 
 # Build MGCC Service Image
-- stage: Build MGCC Service
+- stage: BuildMGCCService
   displayName: Build stage
   jobs:  
   - job: Build
@@ -110,7 +110,7 @@ stages:
     - upload: manifests
       artifact: manifests
 # Deploy MGCC Service Image
-- stage: Deploy MGCC Service
+- stage: DeployMGCCService
   displayName: Deploy stage
   dependsOn: Build
   jobs:
@@ -144,7 +144,7 @@ stages:
 
 
 # Build WebSpa Client Image
-- stage: Build WebSpa Service
+- stage: BuildWebSpaService
   displayName: Build stage
   jobs:  
   - job: Build
@@ -166,7 +166,7 @@ stages:
     - upload: manifests
       artifact: manifests
 # Deploy WebSpa Client Image
-- stage: Deploy WebSpa Service
+- stage: DeployWebSpaService
   displayName: Deploy stage
   dependsOn: Build
   jobs:
