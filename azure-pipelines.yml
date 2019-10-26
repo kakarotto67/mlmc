@@ -56,7 +56,7 @@ stages:
 # Deploy Operation Service Image
 - stage: DeployOperationService
   displayName: Deploy stage
-  dependsOn: Build
+  dependsOn: BuildOperationService
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -112,7 +112,7 @@ stages:
 # Deploy MGCC Service Image
 - stage: DeployMGCCService
   displayName: Deploy stage
-  dependsOn: Build
+  dependsOn: BuildMGCCService
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -168,7 +168,7 @@ stages:
 # Deploy WebSpa Client Image
 - stage: DeployWebSpaService
   displayName: Deploy stage
-  dependsOn: Build
+  dependsOn: BuildWebSpaService
   jobs:
   - deployment: Deploy
     displayName: Deploy
