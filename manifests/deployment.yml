@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: kakarottomlmc 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kakarottomlmc 
+    spec:
+      containers:
+        - name: kakarottomlmc 
+          image: mlmccontainers.azurecr.io/kakarottomlmc
+          ports:
+          - containerPort: 80
