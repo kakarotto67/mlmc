@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: mgcc-service
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 44316
+    - targetPort: 80
+    selector:
+        app: mgcc-service

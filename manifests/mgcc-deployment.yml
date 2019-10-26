@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: mgcc-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mgcc-service
+    spec:
+      containers:
+        - name: mgcc-service
+          image: mlmccontainers.azurecr.io/mgcc-service
+          ports:
+          - containerPort: 80

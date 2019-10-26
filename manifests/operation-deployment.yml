@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: operation-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: operation-service
+    spec:
+      containers:
+        - name: operation-service
+          image: mlmccontainers.azurecr.io/operation-service
+          ports:
+          - containerPort: 80

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: webspa-client
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 4200
+    selector:
+        app: webspa-client

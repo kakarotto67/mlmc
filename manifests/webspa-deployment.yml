@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: webspa-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webspa-client
+    spec:
+      containers:
+        - name: webspa-client
+          image: mlmccontainers.azurecr.io/webspa-client
+          ports:
+          - containerPort: 4200

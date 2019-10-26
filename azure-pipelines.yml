@@ -12,9 +12,18 @@ variables:
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '13d3a5da-9810-4864-b417-c2b2527baf2f'
-  imageRepository: 'kakarottomlmc'
   containerRegistry: 'mlmccontainers.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  # Services
+  operationServiceRepository: 'operation-service'
+  mgccServiceRepository: 'mgcc-service'
+  webspaClientRepository: 'webspa-client'
+  # Dockerfiles of the services
+  operationServiceDockerfilePath: 'src/Services/Operation/Dockerfile'
+  mgccServiceDockerfilePath: 'src/Services/MGCC.Api/Dockerfile'
+  webspaClientDockerfilePath: 'src/Services/MGCC.Api/Dockerfile'
+
+  
+
   tag: '$(Build.BuildId)'
   imagePullSecret: 'mlmccontainers69999e3a-auth'
 
@@ -22,6 +31,7 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
+# Build Operation Service Image
 - stage: Build
   displayName: Build stage
   jobs:  
@@ -34,8 +44,8 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
+        repository: $(operationServiceRepository)
+        dockerfile: $(operationServiceDockerfilePath)
         buildContext: '.'
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
@@ -43,7 +53,7 @@ stages:
           
     - upload: manifests
       artifact: manifests
-
+# Deploy Operation Service Image
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -69,9 +79,121 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/manifests/operation-deployment.yml
+                $(Pipeline.Workspace)/manifests/operation-service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+                $(containerRegistry)/$(operationServiceRepository):$(tag)
+
+
+# Build MGCC Service Image
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(mgccServiceRepository)
+        dockerfile: $(mgccServiceDockerfilePath)
+        buildContext: '.'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          
+    - upload: manifests
+      artifact: manifests
+# Deploy MGCC Service Image
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'kakarotto67mlmc-6929.mlmc'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/mgcc-deployment.yml
+                $(Pipeline.Workspace)/manifests/mgcc-service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(mgccServiceRepository):$(tag)
+
+
+# Build WebSpa Client Image
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(webspaClientRepository)
+        dockerfile: $(webspaClientDockerfilePath)
+        buildContext: '.'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          
+    - upload: manifests
+      artifact: manifests
+# Deploy WebSpa Client Image
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'kakarotto67mlmc-6929.mlmc'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/webspa-deployment.yml
+                $(Pipeline.Workspace)/manifests/webspa-service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(webspaClientRepository):$(tag)
