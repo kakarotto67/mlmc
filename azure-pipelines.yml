@@ -18,7 +18,6 @@ variables:
   mongoServiceRepository: 'mongo-service'
   rabbitServiceRepository: 'rabbit-service'
   operationServiceRepository: 'operation-service'
-  operationServiceRepository: 'operation-service'
   mgccServiceRepository: 'mgcc-service'
   webspaClientRepository: 'webspa-client'
   # Dockerfiles of the services
