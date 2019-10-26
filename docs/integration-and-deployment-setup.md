@@ -13,6 +13,7 @@ The information below describes of how the CI/CD process was set up for MLMC pro
   - On commit to `master`
   - On pull request to `master`
 
+
 ## Setup Azure Kubernetes Service cluster and Deploy the App
 TBD
 
