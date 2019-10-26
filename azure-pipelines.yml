@@ -32,44 +32,48 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-# Deploy MongoDB and RabbitMQ
-- stage: DeployInfrastructure
-  displayName: Deploy stage
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'kakarotto67mlmc-6929.mlmc'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: KubernetesManifest@0
-            displayName: Deploy MongoDB to Kubernetes cluster
-            inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/mongo-deployment.yml
-                $(Pipeline.Workspace)/manifests/mongo-service.yml
-              containers: |
-                mongo
 
-          - task: KubernetesManifest@0
-            displayName: Deploy RabbitMQ to Kubernetes cluster
-            inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/rabbit-deployment.yml
-                $(Pipeline.Workspace)/manifests/rabbit-service.yml
-              containers: |
-                rabbitmq:3-management
+# TODO: I couldn't deploy images directly from the DockerHub to AKS due to the following error:
+# TODO: "No manifest file(s) matching /home/vsts/work/1/manifests/mongo-deployment.yml,/home/vsts/work/1/manifests/mongo-service.yml was found."
+# TODO: More investigation needed.
+
+# Deploy MongoDB and RabbitMQ
+# - stage: DeployInfrastructure
+#   displayName: Deploy stage
+#   jobs:
+#   - deployment: Deploy
+#     displayName: Deploy
+#     pool:
+#       vmImage: $(vmImageName)
+#     environment: 'kakarotto67mlmc-6929.mlmc'
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: KubernetesManifest@0
+#             displayName: Deploy MongoDB to Kubernetes cluster
+#             inputs:
+#               action: deploy
+#               manifests: |
+#                 $(Pipeline.Workspace)/manifests/mongo-deployment.yml
+#                 $(Pipeline.Workspace)/manifests/mongo-service.yml
+#               containers: |
+#                 mongo
+
+#           - task: KubernetesManifest@0
+#             displayName: Deploy RabbitMQ to Kubernetes cluster
+#             inputs:
+#               action: deploy
+#               manifests: |
+#                 $(Pipeline.Workspace)/manifests/rabbit-deployment.yml
+#                 $(Pipeline.Workspace)/manifests/rabbit-service.yml
+#               containers: |
+#                 rabbitmq:3-management
 
 
 # Build Operation Service Image
 - stage: BuildOperationService
   displayName: Build stage
-  dependsOn: DeployInfrastructure
   jobs:  
   - job: Build
     displayName: Build
