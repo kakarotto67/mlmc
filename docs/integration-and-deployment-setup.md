@@ -44,3 +44,9 @@ Notes:
 - There are other ways of how to configure the deployment to AKS
   - Create pipeline using classic editor and add all required jobs/tasks to build containers, push them to ACR and then deploy them to AKS cluster
   - Use Azure Portal -> AKS cluster page -> Deployment Center (preview) page -> Setup CI/CD pipeline from there
+
+## Further Investigation
+- How to deploy MongoDB and RabbitMq containers directly from DockerHub into AKS cluster
+- How to reach any service after it is deployed to AKS cluster
+  - External IP is logged in the respective pipeline stage/job or can be get using kubectl console command (`kubectl get services mgcc-service`)
+  - I guess, service can be reached only if there is at least one related Pod with status Ok (but not Warn, Done, etc., which happens due to errors like no connection to MongoDB or RabbitMq)
