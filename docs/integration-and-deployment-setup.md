@@ -3,7 +3,7 @@ The information below describes of how the CI/CD process was set up for MLMC pro
 
 ## Setup Continuous Integration pipeline in Azure DevOps
 - Created pipeline in Azure DevOps - MLMC project with name `Run Docker Compose`
-  - Agent - ubuntu
+  - Agent - ubuntu-16.04
   - Sources - GitHub's `mlmc` project -> `master` branch
 - Added few steps to that pipeline
   - Install Docker action
