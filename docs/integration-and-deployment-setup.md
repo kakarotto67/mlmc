@@ -34,7 +34,7 @@ The information below describes of how the CI/CD process was set up for MLMC pro
     - `deployment.yaml` - all the services to be deployed to AKS
     - `service.yaml` - services endpoints setup in the AKS
 
-Notes:
+### 4. Notes
 - All these files have to be manually configured to include all the containers you have
 - Resulted pipeline will contain Build Stages and Deploy Stages
 - The `azure-pipelines.yaml` files describes all the steps required
@@ -45,7 +45,7 @@ Notes:
   - Create pipeline using classic editor and add all required jobs/tasks to build containers, push them to ACR and then deploy them to AKS cluster
   - Use Azure Portal -> AKS cluster page -> Deployment Center (preview) page -> Setup CI/CD pipeline from there
 
-## Further Investigation
+### 5. Further Investigation
 - How to deploy MongoDB and RabbitMq containers directly from DockerHub into AKS cluster
 - How to reach any service after it is deployed to AKS cluster
   - External IP is logged in the respective pipeline stage/job or can be get using kubectl console command (`kubectl get services mgcc-service`)
