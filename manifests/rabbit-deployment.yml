@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: rabbit-service
-          image: https://index.docker.io/v1/rabbitmq:3-management
+          image: rabbitmq:3-management
           ports:
           - containerPort: 5672
           env:
