@@ -8,6 +8,7 @@ Current state: In Active Development.
 Summary
 - [Architectural diagram](https://github.com/kakarotto67/mlmc/blob/master/README.md#architectural-diagram)
 - [Make it run](https://github.com/kakarotto67/mlmc/blob/master/README.md#make-it-run)
+- [Integration and Deployment](https://github.com/kakarotto67/mlmc/blob/master/docs/integration-and-deployment-setup.md)
 - [Architectural decisions log](https://github.com/kakarotto67/mlmc/blob/master/README.md#architectural-decisions-log)
 - [Other](https://github.com/kakarotto67/mlmc/blob/master/README.md#other)
 
