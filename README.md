@@ -13,7 +13,7 @@ Summary
 - [Other](https://github.com/kakarotto67/mlmc/blob/master/README.md#other)
 
 ### Architectural diagram
-[ Will be updated soon ]
+[ Needs to be updated ]
 
 
 ![Architectural reference diagram](https://github.com/kakarotto67/mlmc/blob/master/MLMC_Design_1.0.png)
