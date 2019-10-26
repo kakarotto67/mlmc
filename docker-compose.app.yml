@@ -3,7 +3,7 @@ version: "3.1"
 services:
 
   operation-service:
-    image: "operation-service"
+    image: "operation-service:v1"
     container_name: "mlmc-operation-service"
     build:
       context: .
@@ -17,7 +17,7 @@ services:
       MessageBusSettings__HostName: message-bus
 
   mgcc-service:
-    image: "mgcc-service"
+    image: "mgcc-service:v1"
     container_name: "mlmc-mgcc-service"
     build:
       context: .
@@ -30,7 +30,7 @@ services:
       MessageBusSettings__HostName: message-bus
 
   webspa-client:
-    image: "webspa-client"
+    image: "webspa-client:v1"
     container_name: "mlmc-webspa-client"
     build:
       context: .
