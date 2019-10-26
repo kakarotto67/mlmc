@@ -6,6 +6,6 @@ spec:
     type: LoadBalancer
     ports:
     - port: 44316
-    - targetPort: 80
+      targetPort: 80
     selector:
         app: mgcc-service
