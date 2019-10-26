@@ -33,4 +33,7 @@ The information below describes of how the CI/CD process was set up for MLMC pro
   - `manifests` folder
     - `deployment.yaml` - all the services to be deployed to AKS
     - `service.yaml` - services endpoints setup in the AKS
+
+Notes:
 - All these files have to be manually configured to include all the containers you have
+- Resulted pipeline will contain Build Stages and Deploy Stages
