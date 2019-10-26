@@ -14,3 +14,7 @@ spec:
           image: mlmccontainers.azurecr.io/webspa-client
           ports:
           - containerPort: 4200
+        - resources:
+          limits:
+            memory: "64Mi"
+            cpu: "250m"

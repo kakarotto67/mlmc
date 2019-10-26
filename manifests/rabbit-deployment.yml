@@ -1,0 +1,27 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: rabbit-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rabbit-service
+    spec:
+      containers:
+        - name: rabbit-service
+          image: https://index.docker.io/v1/rabbitmq:3-management
+          ports:
+          - containerPort: 5672
+          env:
+          - name: RABBITMQ_DEFAULT_USER
+            value: "admin"
+          - name: RABBITMQ_DEFAULT_PASS
+            value: "qwerty"
+          - name: RABBITMQ_DEFAULT_VHOST
+            value: "local"
+        - resources:
+          limits:
+            memory: "64Mi"
+            cpu: "250m"
