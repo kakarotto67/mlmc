@@ -41,3 +41,6 @@ Notes:
   - Deploy MongoDB and RabbitMq to the AKS
   - Build all the containers to ACR and then deploy them to AKS
 - The `azure-pipelines.yaml` file uses different k8s settings files from `manifests` folder to deploy and run services on AKS, but, generally speaking, those files can be combined into single one and then pipeline jobs/tasks have to be modified accordingly
+- There are other ways of how to configure the deployment to AKS
+  - Create pipeline using classic editor and add all required jobs/tasks to build containers, push them to ACR and then deploy them to AKS cluster
+  - Use Azure Portal -> AKS cluster page -> Deployment Center (preview) page -> Setup CI/CD pipeline from there
