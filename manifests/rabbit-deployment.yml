@@ -21,7 +21,7 @@ spec:
             value: "qwerty"
           - name: RABBITMQ_DEFAULT_VHOST
             value: "local"
-        - resources:
-          limits:
-            memory: "64Mi"
-            cpu: "250m"
+        # - resources:
+        #   limits:
+        #     memory: "64Mi"
+        #     cpu: "250m"

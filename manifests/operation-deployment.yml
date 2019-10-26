@@ -14,7 +14,7 @@ spec:
           image: mlmccontainers.azurecr.io/operation-service
           ports:
           - containerPort: 80
-        - resources:
-          limits:
-            memory: "64Mi"
-            cpu: "250m"
+        # - resources:
+        #   limits:
+        #     memory: "64Mi"
+        #     cpu: "250m"
