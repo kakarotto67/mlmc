@@ -15,6 +15,9 @@ variables:
   dockerHubRegistry: 'https://index.docker.io/v1'
   containerRegistry: 'mlmccontainers.azurecr.io'
   # Services
+  mongoServiceRepository: 'mongo-service'
+  rabbitServiceRepository: 'rabbit-service'
+  operationServiceRepository: 'operation-service'
   operationServiceRepository: 'operation-service'
   mgccServiceRepository: 'mgcc-service'
   webspaClientRepository: 'webspa-client'
@@ -30,9 +33,47 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
+# Build Operation Service Image
+- stage: BuildInfrastructure
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(mongoServiceRepository)
+        dockerfile: $(dockerHubRegistry)/mongo
+        buildContext: '.'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+    - upload: manifests
+      artifact: manifests
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(rabbitServiceRepository)
+        dockerfile: $(dockerHubRegistry)/rabbitmq:3-management
+        buildContext: '.'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+          
+    - upload: manifests
+      artifact: manifests
+
 # Deploy MongoDB and RabbitMQ
 - stage: DeployInfrastructure
   displayName: Deploy stage
+  dependsOn: BuildInfrastructure
   jobs:
   - deployment: Deploy
     displayName: Deploy
@@ -52,7 +93,7 @@ stages:
                 $(Pipeline.Workspace)/manifests/mongo-service.yml
               containers: |
                 $(dockerHubRegistry)/mongo
-                
+
           - task: KubernetesManifest@0
             displayName: Deploy RabbitMQ to Kubernetes cluster
             inputs:
